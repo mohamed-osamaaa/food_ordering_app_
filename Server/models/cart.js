@@ -5,7 +5,7 @@ const CartSchema = new mongoose.Schema(
         items: [
             {
                 item: {
-                    type: String,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: "Item",
                     required: true,
                 },
@@ -34,4 +34,4 @@ const CartSchema = new mongoose.Schema(
     }
 );
 
-export default mongoose.model("Cart", CartSchema);
+module.exports = mongoose.model("Cart", CartSchema);

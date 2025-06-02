@@ -10,7 +10,7 @@ const OrderSchema = new mongoose.Schema(
         items: [
             {
                 item: {
-                    type: String,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: "Item",
                     required: true,
                 },
@@ -30,4 +30,4 @@ const OrderSchema = new mongoose.Schema(
     }
 );
 
-export default mongoose.model("Order", OrderSchema);
+module.exports = mongoose.model("Order", OrderSchema);
