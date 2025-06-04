@@ -1,13 +1,7 @@
 import express from "express";
+import multer from "multer";
 
-import {
-    createItem,
-    deleteExtraIngredient,
-    deleteItem,
-    getAllItems,
-    getItemById,
-    updateItem,
-} from "../../controllers/Items/index.js";
+import itemsController from "../../controllers/Items/index.js";
 import allow from "../../middlewares/allowTo.js";
 import verifyToken from "../../middlewares/verifyToken.js";
 
@@ -37,17 +31,22 @@ const upload = multer({
     storage,
     fileFilter,
 });
-router.get("/", getAllItems);
-router.get("/:id", getItemById);
+router.get("/", itemsController.getItems);
+router.get("/:id", itemsController.getItem);
 router.post(
     "/",
     verifyToken,
     allow("admin"),
     upload.single("itemImage"),
-    createItem
+    itemsController.createItem
 );
-router.put("/:id", verifyToken, allow("admin"), updateItem);
-router.delete("/:id", verifyToken, allow("admin"), deleteItem);
-router.delete("/:id/:name", verifyToken, allow("admin"), deleteExtraIngredient);
+router.put("/:id", verifyToken, allow("admin"), itemsController.updateItem);
+router.delete("/:id", verifyToken, allow("admin"), itemsController.deleteItem);
+router.delete(
+    "/:id/:name",
+    verifyToken,
+    allow("admin"),
+    itemsController.deleteExtraIngredient
+);
 
 export default router;

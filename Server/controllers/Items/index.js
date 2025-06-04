@@ -1,4 +1,5 @@
-const { Item } = require("../../models/items.js");
+import Item from "../../models/items.js";
+
 const createItem = async (req, res) => {
     try {
         const itemData = req.body;
@@ -135,7 +136,7 @@ const getItems = async (req, res) => {
         });
     }
 };
-module.exports = {
+export default {
     createItem,
     updateItem,
     deleteItem,
