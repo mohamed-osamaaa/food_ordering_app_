@@ -6,6 +6,10 @@ import path from "path";
 
 import connectDB from "./config/db.js";
 import authRoute from "./routes/Auth/index.js";
+import categoriesRoute from "./routes/Categories/index.js";
+import itemsRoute from "./routes/Items/index.js";
+import ordersRoute from "./routes/Orders/index.js";
+import usersRoute from "./routes/Users/index.js";
 
 dotenv.config();
 
@@ -21,6 +25,10 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(path.resolve(), "uploads")));
 
 app.use("/api/auth", authRoute);
+app.use("/api/categories", categoriesRoute);
+app.use("/api/users", usersRoute);
+app.use("/api/orders", ordersRoute);
+app.use("/api/items", itemsRoute);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
