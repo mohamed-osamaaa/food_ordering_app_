@@ -10,6 +10,7 @@ import cartRoutes from "./routes/Cart/index.js";
 import categoriesRoute from "./routes/Categories/index.js";
 import itemsRoute from "./routes/Items/index.js";
 import ordersRoute from "./routes/Orders/index.js";
+import stripeRoutes from "./routes/Stripe/index.js";
 import usersRoute from "./routes/Users/index.js";
 
 dotenv.config();
@@ -22,7 +23,7 @@ connectDB();
 app.use(cookieParser());
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: process.env.CLIENT_URL,
         credentials: true, // Allow cookies to be sent with requests
         methods: ["GET", "POST", "PUT", "DELETE"],
     })
@@ -37,6 +38,7 @@ app.use("/api/users", usersRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/items", itemsRoute);
 app.use("/api/cart", cartRoutes);
+app.use("api/check-out", stripeRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
