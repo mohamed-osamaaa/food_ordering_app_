@@ -32,7 +32,8 @@ const upload = multer({
     fileFilter,
 });
 router.get("/", itemsController.getItems);
-router.get("/:id", itemsController.getItem);
+router.get("/:categoryName", itemsController.getItemsBySameCategory);
+router.get("/:itemId", itemsController.getItem);
 router.post(
     "/",
     verifyToken,
@@ -40,10 +41,20 @@ router.post(
     upload.single("itemImage"),
     itemsController.createItem
 );
-router.put("/:id", verifyToken, allow("admin"), itemsController.updateItem);
-router.delete("/:id", verifyToken, allow("admin"), itemsController.deleteItem);
+router.patch(
+    "/:itemId",
+    verifyToken,
+    allow("admin"),
+    itemsController.updateItem
+);
 router.delete(
-    "/:id/:name",
+    "/:itemId",
+    verifyToken,
+    allow("admin"),
+    itemsController.deleteItem
+);
+router.delete(
+    "/:itemId/:ingredientName",
     verifyToken,
     allow("admin"),
     itemsController.deleteExtraIngredient

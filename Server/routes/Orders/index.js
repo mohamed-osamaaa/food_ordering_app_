@@ -6,7 +6,7 @@ import verifyToken from "../../middlewares/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/", verifyToken, allow("admin"), getOrder);
-router.get("/:id", verifyToken, allow("admin"), getOrders);
+router.get("/", verifyToken, allow("admin"), getOrders);
+router.get("/:orderId", verifyToken, allow("admin"), getOrder);
 
 export default router;

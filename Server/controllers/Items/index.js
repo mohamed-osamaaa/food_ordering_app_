@@ -136,6 +136,44 @@ const getItems = async (req, res) => {
         });
     }
 };
+const getItemsBySameCategory = async (req, res) => {
+    try {
+        const { categoryName } = req.params;
+
+        if (!categoryName) {
+            return res.status(400).json({
+                success: false,
+                message: "Category name is required",
+            });
+        }
+
+        // Find the category by name
+        const category = await Category.findOne({ name: categoryName });
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "Category not found",
+            });
+        }
+
+        // Find all items with the matched category ID
+        const items = await Item.find({ category: category._id }).populate(
+            "category"
+        );
+
+        res.status(200).json({
+            success: true,
+            data: items,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message,
+        });
+    }
+};
 export default {
     createItem,
     updateItem,
@@ -143,4 +181,5 @@ export default {
     getItem,
     getItems,
     deleteExtraIngredient,
+    getItemsBySameCategory,
 };
