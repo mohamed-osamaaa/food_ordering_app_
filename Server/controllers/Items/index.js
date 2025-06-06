@@ -1,8 +1,21 @@
+import Category from "../../models/categories.js";
 import Item from "../../models/items.js";
 
 const createItem = async (req, res) => {
     try {
         const itemData = req.body;
+
+        // Find the category by name
+        const categoryDoc = await Category.findOne({ name: itemData.category });
+        if (!categoryDoc) {
+            return res.status(400).json({
+                success: false,
+                message: `Category '${itemData.category}' not found`,
+            });
+        }
+
+        // Replace category name with ObjectId
+        itemData.category = categoryDoc._id;
         const newItem = new Item(itemData);
         await newItem.save();
         res.status(201).json({
@@ -21,6 +34,21 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
     const { itemId } = req.params;
     try {
+        if (req.body.category) {
+            // Find the category by name
+            const categoryDoc = await Category.findOne({
+                name: itemData.category,
+            });
+            if (!categoryDoc) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Category '${itemData.category}' not found`,
+                });
+            }
+
+            // Replace category name with ObjectId
+            itemData.category = categoryDoc._id;
+        }
         const updatedItem = await Item.findByIdAndUpdate(itemId, req.body, {
             new: true,
             runValidators: true,

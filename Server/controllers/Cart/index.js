@@ -19,7 +19,8 @@ const calculateTotalPrice = async (items) => {
 export const addToCart = async (req, res) => {
     try {
         const userId = req.currentUser.id;
-        const { itemId, quantity = 1 } = req.body;
+        const { itemId } = req.params;
+        const quantity = 1;
 
         const itemExists = await Item.findById(itemId);
         if (!itemExists) {

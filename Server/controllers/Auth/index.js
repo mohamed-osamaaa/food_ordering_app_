@@ -37,7 +37,11 @@ export const register = async (req, res) => {
             profileImage: req.file?.filename || undefined,
         });
 
-        const token = generateJWT({ id: newUser._id, role: newUser.role });
+        const token = await generateJWT({
+            id: user._id,
+            role: user.role,
+            time: Date.now(),
+        });
 
         await newUser.save();
 
@@ -97,7 +101,11 @@ export const login = async (req, res) => {
             });
         }
 
-        const token = generateJWT({ id: user._id, role: user.role });
+        const token = await generateJWT({
+            id: user._id,
+            role: user.role,
+            time: Date.now(),
+        });
 
         res.cookie("token", token, {
             httpOnly: true,
