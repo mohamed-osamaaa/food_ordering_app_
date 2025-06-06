@@ -38,7 +38,7 @@ app.use("/api/users", usersRoute);
 app.use("/api/orders", ordersRoute);
 app.use("/api/items", itemsRoute);
 app.use("/api/cart", cartRoutes);
-app.use("api/check-out", stripeRoutes);
+app.use("/api/check-out", stripeRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
