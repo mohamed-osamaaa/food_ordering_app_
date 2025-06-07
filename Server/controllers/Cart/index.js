@@ -18,7 +18,7 @@ const calculateTotalPrice = async (items) => {
 
 export const addToCart = async (req, res) => {
     try {
-        const userId = req.currentUser.id;
+        const userId = req.currentUser._id;
         const { itemId } = req.params;
         const quantity = 1;
 
@@ -55,7 +55,7 @@ export const addToCart = async (req, res) => {
 
 export const deleteFromCart = async (req, res) => {
     try {
-        const userId = req.currentUser.id;
+        const userId = req.currentUser._id;
         const { itemId } = req.params;
 
         let cart = await Cart.findOne({ user: userId });

@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async (req, res) => {
     try {
-        const userId = req.currentUser.id;
+        const userId = req.currentUser._id;
 
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
@@ -52,9 +52,35 @@ export const createCheckoutSession = async (req, res) => {
     }
 };
 
+export const successPageDetails = async (req, res) => {
+    try {
+        const userId = req.currentUser._id;
+
+        const cart = await Cart.findOne({ user: userId }).populate(
+            "items.item"
+        );
+
+        if (!cart || cart.items.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Your cart is empty.",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Checkout successful",
+            cart,
+        });
+    } catch (error) {
+        console.error("Error fetching cart details:", error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
 export const stripeWebhook = async (req, res) => {
     try {
-        const userId = req.currentUser.id;
+        const userId = req.currentUser._id;
 
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"

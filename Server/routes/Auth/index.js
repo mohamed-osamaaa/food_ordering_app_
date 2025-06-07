@@ -6,6 +6,7 @@ import {
     validateLogin,
     validateRegister,
 } from "../../middlewares/authValidation.js";
+import verifyToken from "../../middlewares/verifyToken.js";
 
 const router = express.Router();
 
@@ -42,5 +43,21 @@ router.post(
     register
 );
 router.post("/login", validateLogin, login);
+router.get("/check-auth", verifyToken, (req, res) => {
+    const user = req.currentUser;
+    if (!user) {
+        return res.status(401).json({
+            success: false,
+            message: "Unauthorized access!",
+        });
+    }
 
+    res.status(200).json({
+        success: true,
+        message: "Authenticated user!",
+        data: {
+            user,
+        },
+    });
+});
 export default router;
