@@ -33,17 +33,17 @@ export const register = async (req, res) => {
             password: hashedPassword,
             phone,
             address,
-            role: "user", // Default role is 'user'
+            role: "user",
             profileImage: req.file?.filename || undefined,
         });
 
+        await newUser.save();
+
         const token = await generateJWT({
-            id: user._id,
-            role: user.role,
+            id: newUser._id,
+            role: newUser.role,
             time: Date.now(),
         });
-
-        await newUser.save();
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -52,16 +52,30 @@ export const register = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
+        // res.status(201).json({
+        //     success: true,
+        //     data: {
+        //         id: newUser._id,
+        //         fullname: newUser.fullname,
+        //         email: newUser.email,
+        //         role: newUser.role,
+        //         phone: newUser.phone,
+        //         address: newUser.address,
+        //         profileImage: newUser.profileImage,
+        //     },
+        // });
         res.status(201).json({
             success: true,
             data: {
-                id: newUser._id,
-                fullname: newUser.fullname,
-                email: newUser.email,
-                role: newUser.role,
-                phone: newUser.phone,
-                address: newUser.address,
-                profileImage: newUser.profileImage,
+                user: {
+                    id: newUser._id,
+                    fullname: newUser.fullname,
+                    email: newUser.email,
+                    role: newUser.role,
+                    phone: newUser.phone,
+                    address: newUser.address,
+                    profileImage: newUser.profileImage,
+                },
             },
         });
     } catch (err) {
@@ -114,17 +128,32 @@ export const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
+        // res.status(200).json({
+        //     success: true,
+        //     message: "Login successful",
+        //     data: {
+        //         id: user._id,
+        //         fullname: user.fullname,
+        //         email: user.email,
+        //         role: user.role,
+        //         phone: user.phone,
+        //         address: user.address,
+        //         profileImage: user.profileImage,
+        //     },
+        // });
         res.status(200).json({
             success: true,
             message: "Login successful",
             data: {
-                id: user._id,
-                fullname: user.fullname,
-                email: user.email,
-                role: user.role,
-                phone: user.phone,
-                address: user.address,
-                profileImage: user.profileImage,
+                user: {
+                    id: user._id,
+                    fullname: user.fullname,
+                    email: user.email,
+                    role: user.role,
+                    phone: user.phone,
+                    address: user.address,
+                    profileImage: user.profileImage,
+                },
             },
         });
     } catch (err) {
