@@ -10,7 +10,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 function Register() {
     const router = useRouter();
     const [formData, setFormData] = useState({
-        fullName: "",
+        fullname: "",
         email: "",
         password: "",
         phone: "",
@@ -73,11 +73,11 @@ function Register() {
                         </label>
                         <input
                             type="text"
-                            value={formData.fullName}
+                            value={formData.fullname}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    fullName: e.target.value,
+                                    fullname: e.target.value,
                                 })
                             }
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none"

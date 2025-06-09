@@ -52,30 +52,16 @@ export const register = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        // res.status(201).json({
-        //     success: true,
-        //     data: {
-        //         id: newUser._id,
-        //         fullname: newUser.fullname,
-        //         email: newUser.email,
-        //         role: newUser.role,
-        //         phone: newUser.phone,
-        //         address: newUser.address,
-        //         profileImage: newUser.profileImage,
-        //     },
-        // });
         res.status(201).json({
             success: true,
             data: {
-                user: {
-                    id: newUser._id,
-                    fullname: newUser.fullname,
-                    email: newUser.email,
-                    role: newUser.role,
-                    phone: newUser.phone,
-                    address: newUser.address,
-                    profileImage: newUser.profileImage,
-                },
+                id: newUser._id,
+                fullname: newUser.fullname,
+                email: newUser.email,
+                role: newUser.role,
+                phone: newUser.phone,
+                address: newUser.address,
+                profileImage: newUser.profileImage,
             },
         });
     } catch (err) {
@@ -128,32 +114,17 @@ export const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        // res.status(200).json({
-        //     success: true,
-        //     message: "Login successful",
-        //     data: {
-        //         id: user._id,
-        //         fullname: user.fullname,
-        //         email: user.email,
-        //         role: user.role,
-        //         phone: user.phone,
-        //         address: user.address,
-        //         profileImage: user.profileImage,
-        //     },
-        // });
         res.status(200).json({
             success: true,
             message: "Login successful",
             data: {
-                user: {
-                    id: user._id,
-                    fullname: user.fullname,
-                    email: user.email,
-                    role: user.role,
-                    phone: user.phone,
-                    address: user.address,
-                    profileImage: user.profileImage,
-                },
+                id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                role: user.role,
+                phone: user.phone,
+                address: user.address,
+                profileImage: user.profileImage,
             },
         });
     } catch (err) {
