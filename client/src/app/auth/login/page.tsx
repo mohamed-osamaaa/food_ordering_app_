@@ -68,7 +68,7 @@ function Login() {
 
                 <button
                     type="submit"
-                    className="btn bg-red-500 hover:bg-red-600 text-white py-2 rounded w-full cursor-pointer shadow-md transition-colors duration-200"
+                    className="btn !bg-red-500 hover:bg-red-600 text-white py-2 rounded w-full cursor-pointer shadow-md transition-colors duration-200"
                     disabled={isLoggingIn}
                 >
                     {isLoggingIn ? (

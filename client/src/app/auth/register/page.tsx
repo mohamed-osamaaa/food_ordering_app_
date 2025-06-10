@@ -24,7 +24,7 @@ function Register() {
         e.preventDefault();
 
         const success = await register(formData);
-        if (success) router.replace("/");
+        if (success) router.replace("/auth/login");
     };
 
     const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,7 +159,7 @@ function Register() {
 
                     <button
                         type="submit"
-                        className="btn bg-red-500 hover:bg-red-600 text-white py-2 rounded w-full cursor-pointer shadow-md transition-colors duration-200"
+                        className="btn !bg-red-500 hover:bg-red-600 text-white py-2 rounded w-full cursor-pointer shadow-md transition-colors duration-200"
                         disabled={isRegister}
                     >
                         {isRegister ? (

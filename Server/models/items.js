@@ -19,7 +19,7 @@ const ItemSchema = new mongoose.Schema(
         },
         itemImage: {
             type: String,
-            default: "uploads/items/img1.jpeg",
+            default: "img1.jpeg",
         },
         sizes: [
             {

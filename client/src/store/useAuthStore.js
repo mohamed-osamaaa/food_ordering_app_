@@ -35,20 +35,52 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    // register: async (data) => {
+    //     set({ isRegister: true });
+    //     try {
+    //         const res = await axiosInstance.post("/api/auth/register", data);
+    //         set({ authUser: res.data.data });
+    //         toast.success("Account created successfully");
+    //         return true;
+    //     } catch (error) {
+    //         toast.error(error.response.data.message);
+    //         return false;
+    //     } finally {
+    //         set({ isRegister: false });
+    //     }
+    // },
     register: async (data) => {
         set({ isRegister: true });
+
         try {
-            const res = await axiosInstance.post("/api/auth/register", data);
+            const formData = new FormData();
+            formData.append("fullname", data.fullname);
+            formData.append("email", data.email);
+            formData.append("password", data.password);
+            formData.append("phone", data.phone);
+            formData.append("address", data.address);
+
+            if (data.profileImage) {
+                formData.append("profileImage", data.profileImage);
+            }
+
+            const res = await axiosInstance.post("/api/auth/register", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
             set({ authUser: res.data.data });
             toast.success("Account created successfully");
             return true;
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error?.response?.data?.message || "Registration failed");
             return false;
         } finally {
             set({ isRegister: false });
         }
     },
+
     logout: async () => {
         try {
             await axiosInstance.post("/api/auth/logout");

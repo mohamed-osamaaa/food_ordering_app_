@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 
-import { login, register } from "../../controllers/Auth/index.js";
+import { checkAuth, login, register } from "../../controllers/Auth/index.js";
 import {
     validateLogin,
     validateRegister,
@@ -38,28 +38,29 @@ const upload = multer({
 
 router.post(
     "/register",
-    validateRegister,
     upload.single("profileImage"),
+    validateRegister,
     register
 );
 router.post("/login", validateLogin, login);
-router.get("/check-auth", verifyToken, (req, res) => {
-    const user = req.currentUser;
-    if (!user) {
-        return res.status(401).json({
-            success: false,
-            message: "Unauthorized access!",
-        });
-    }
+// router.get("/check-auth", verifyToken, (req, res) => {
+//     const user = req.currentUser;
+//     if (!user) {
+//         return res.status(401).json({
+//             success: false,
+//             message: "Unauthorized access!",
+//         });
+//     }
 
-    res.status(200).json({
-        success: true,
-        message: "Authenticated user!",
-        data: {
-            user,
-        },
-    });
-});
+//     res.status(200).json({
+//         success: true,
+//         message: "Authenticated user!",
+//         data: {
+//             user,
+//         },
+//     });
+// });
+router.get("/check-auth", verifyToken, checkAuth);
 router.post("/logout", (req, res) => {
     res.clearCookie("token");
     res.status(200).json({

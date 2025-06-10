@@ -3,7 +3,8 @@ import { validationResult } from "express-validator";
 
 import User from "../../models/users.js";
 import generateJWT from "../../utils/generateJWT.js";
-
+import dotenv from "dotenv";
+dotenv.config();
 export const register = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -61,7 +62,7 @@ export const register = async (req, res) => {
                 role: newUser.role,
                 phone: newUser.phone,
                 address: newUser.address,
-                profileImage: newUser.profileImage,
+                profileImage: process.env.PROFILE_IMAGE_PATH + newUser.profileImage,
             },
         });
     } catch (err) {
@@ -114,9 +115,8 @@ export const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000,
         });
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
-            message: "Login successful",
             data: {
                 id: user._id,
                 fullname: user.fullname,
@@ -124,7 +124,7 @@ export const login = async (req, res) => {
                 role: user.role,
                 phone: user.phone,
                 address: user.address,
-                profileImage: user.profileImage,
+                profileImage: process.env.PROFILE_IMAGE_PATH + user.profileImage,
             },
         });
     } catch (err) {
@@ -134,3 +134,44 @@ export const login = async (req, res) => {
         });
     }
 };
+export const checkAuth = async (req, res) => {
+    const tokenUser = req.currentUser;
+
+    if (!tokenUser) {
+        return res.status(401).json({
+            success: false,
+            message: "Unauthorized access!",
+        });
+    }
+
+    try {
+        const user = await User.findById(tokenUser.id).select('-password');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found!",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Authenticated user!",
+            data: {
+                id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                role: user.role,
+                phone: user.phone,
+                address: user.address,
+                profileImage: process.env.PROFILE_IMAGE_PATH + user.profileImage,
+            },
+        });
+    } catch (error) {
+        console.error("Error in /check-auth:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+        });
+    }
+}
