@@ -18,7 +18,7 @@ const Header = () => {
                 {["home", "menu", "about", "contact"].map((page) => (
                     <Link
                         key={page}
-                        href={`/${page}`}
+                        href={page === "home" ? "/" : `/home/${page}`}
                         className="font-semibold text-gray-700 hover:text-red-500 transition-colors duration-200"
                     >
                         {page.charAt(0).toUpperCase() + page.slice(1)}
@@ -39,7 +39,7 @@ const Header = () => {
                                 />
                             </div>
                             <button onClick={handleClick} className='cursor-pointer bg-red-500 text-white font-bold py-2 px-6 rounded-3xl'>Logout</button>
-                            <Link href="/cart"><ShoppingCartIcon className="size-7" /></Link>
+                            <Link href="/home/cart"><ShoppingCartIcon className="size-7" /></Link>
                         </div>
                     ) : (
                         <div className='ml-44'>
