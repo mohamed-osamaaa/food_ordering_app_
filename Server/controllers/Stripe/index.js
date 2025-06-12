@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 
 import Cart from "../../models/cart.js";
+import Order from "../../models/orders.js"
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ export const createCheckoutSession = async (req, res) => {
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
         );
+        // const cart = await Cart.findOne({ user: userId });
 
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({
@@ -22,8 +24,9 @@ export const createCheckoutSession = async (req, res) => {
             });
         }
 
-        const lineItems = cart.items.map(({ item, quantity }) => {
-            const priceInCents = item.sizes?.[0]?.price * 100 || 0;
+        const lineItems = cart.items.map(({ item, price, quantity }) => {
+            // const priceInCents = item.sizes?.[0]?.price * 100 || 0;
+            const priceInCents = Math.round(price * 100) || 0; //Multiply by 100 to convert dollars to cents.
 
             return {
                 price_data: {
@@ -41,8 +44,8 @@ export const createCheckoutSession = async (req, res) => {
             payment_method_types: ["card"],
             mode: "payment",
             line_items: lineItems,
-            success_url: `${process.env.CLIENT_URL}/checkout/success`,
-            cancel_url: `${process.env.CLIENT_URL}/`,
+            success_url: `${process.env.CLIENT_URL}/home/check-out`,
+            cancel_url: `${process.env.CLIENT_URL}/home/cart`,
         });
 
         res.json({ url: session.url });
@@ -59,6 +62,7 @@ export const successPageDetails = async (req, res) => {
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
         );
+        // const cart = await Cart.findOne({ user: userId });
 
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({
@@ -67,14 +71,14 @@ export const successPageDetails = async (req, res) => {
             });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Checkout successful",
             cart,
         });
     } catch (error) {
         console.error("Error fetching cart details:", error);
-        res.status(500).json({ success: false, error: error.message });
+        return res.status(500).json({ success: false, error: error.message });
     }
 };
 
@@ -85,6 +89,7 @@ export const stripeWebhook = async (req, res) => {
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
         );
+        // const cart = await Cart.findOne({ user: userId });
 
         if (!cart) return res.status(404).json({ message: "Cart not found" });
 
@@ -97,8 +102,8 @@ export const stripeWebhook = async (req, res) => {
         await newOrder.save();
         await Cart.findOneAndDelete({ user: userId });
 
-        res.status(200).json({ success: true, message: "process completed" });
+        return res.status(200).json({ success: true, message: "process completed" });
     } catch (error) {
-        console.error("process failed:", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 };

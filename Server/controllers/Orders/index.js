@@ -2,7 +2,7 @@ import Order from "../../models/orders.js";
 
 export const getOrders = async (req, res) => {
     try {
-        const orders = await Order.find();
+        const orders = await Order.find().populate("user").populate("items.item");
         res.status(200).json({
             success: true,
             data: orders,
@@ -19,7 +19,7 @@ export const getOrders = async (req, res) => {
 export const getOrder = async (req, res) => {
     const { orderId } = req.params;
     try {
-        const order = await Order.findById(orderId);
+        const order = await Order.findById(orderId).populate("user").populate("items.item");
         if (!order) {
             return res.status(404).json({
                 success: false,

@@ -59,5 +59,7 @@ router.delete(
     allow("admin"),
     itemsController.deleteExtraIngredient
 );
+router.delete('/:itemId/:sizeValue', itemsController.deleteSize);
+
 
 export default router;
