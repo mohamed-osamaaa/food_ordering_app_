@@ -4,6 +4,7 @@ import React from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { ShoppingCartIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useCartStore } from '@/store/useCartStore';
 
 const Header = () => {
     const { authUser, logout } = useAuthStore();
@@ -11,6 +12,7 @@ const Header = () => {
         await logout();
     };
     console.log("authUser", authUser);
+    const { itemCount } = useCartStore();
     return (
         <header className="flex justify-center items-center h-20 gap-60">
             <h1 className="text-red-500 font-bold text-3xl">ST PIZZA</h1>
@@ -39,7 +41,14 @@ const Header = () => {
                                 />
                             </div>
                             <button onClick={handleClick} className='cursor-pointer bg-red-500 text-white font-bold py-2 px-6 rounded-3xl'>Logout</button>
-                            <Link href="/home/cart"><ShoppingCartIcon className="size-7" /></Link>
+                            <Link href="/home/cart" className="relative">
+                                <ShoppingCartIcon className="size-7" />
+                                {itemCount > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                        {itemCount}
+                                    </span>
+                                )}
+                            </Link>
                         </div>
                     ) : (
                         <div className='ml-44'>

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios';
+import toast from 'react-hot-toast';
 
 // Type definitions based on API response
 interface Category {
@@ -26,14 +27,20 @@ interface Item {
 interface ItemStore {
     categories: Category[];
     itemsByCategory: Record<string, Item[]>;
+    selectedItems: Item[];
+    selectedItem: Item | null; // Added missing property with correct type
     isLoading: boolean;
     error: string | null;
     fetchItems: () => Promise<{ categories: Category[]; itemsByCategory: Record<string, Item[]> } | null>;
+    fetchItemsByIds: (ids: string[]) => Promise<Item[] | null>;
+    fetchItemById: (id: string) => Promise<Item | null>;
 }
 
 export const useItemStore = create<ItemStore>((set, get) => ({
     categories: [],
     itemsByCategory: {},
+    selectedItems: [],
+    selectedItem: null, // Fixed: changed from {} to null to match the type
     isLoading: false,
     error: null,
 
@@ -67,19 +74,89 @@ export const useItemStore = create<ItemStore>((set, get) => ({
                     itemsByCategory[categoryName].push(item);
                 }
             });
-            // console.log(items);
 
             set({
                 categories,
                 itemsByCategory,
                 isLoading: false,
             });
+            // toast.success("Items loaded successfully");
             return { categories, itemsByCategory };
         } catch (error: any) {
             set({
                 error: error.response?.data?.message || 'Failed to fetch data',
                 isLoading: false,
             });
+            toast.error(error.response?.data?.message || 'Failed to fetch data');
+            return null;
+        }
+    },
+
+    fetchItemsByIds: async (ids: string[]) => {
+        set({ isLoading: true, error: null });
+        try {
+            const itemPromises = ids.map(id =>
+                axiosInstance.get(`/api/items/${id}`)
+            );
+
+            const responses = await Promise.allSettled(itemPromises);
+
+            const items: Item[] = [];
+            const errors: string[] = [];
+
+            responses.forEach((response, index) => {
+                if (response.status === 'fulfilled') {
+                    items.push(response.value.data.data);
+                } else {
+                    errors.push(`Failed to fetch item with ID: ${ids[index]}`);
+                }
+            });
+
+            set({
+                selectedItems: items,
+                isLoading: false,
+                error: errors.length > 0 ? errors.join(', ') : null,
+            });
+
+            // if (items.length > 0) {
+            //     toast.success(`Successfully loaded ${items.length} item${items.length > 1 ? "s" : ""}`);
+            // }
+
+            if (errors.length > 0) {
+                toast.error(errors.length > 0 ? errors.join(', ') : null);
+            }
+
+            return items.length > 0 ? items : null;
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message || 'Failed to fetch items by IDs',
+                isLoading: false,
+            });
+            toast.error(error.response?.data?.message || 'Failed to fetch items by IDs');
+            return null;
+        }
+    },
+
+    fetchItemById: async (id: string) => {
+        set({ isLoading: true, error: null });
+        try {
+            const response = await axiosInstance.get(`/api/items/${id}`);
+
+            const item: Item = response.data.data;
+
+            set({
+                selectedItem: item,
+                isLoading: false,
+                error: null,
+            });
+            // toast.success("Item loaded successfully");
+            return item;
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message || 'Failed to fetch item by ID',
+                isLoading: false,
+            });
+            toast.error(error.response?.data?.message || 'Failed to fetch items by ID');
             return null;
         }
     },

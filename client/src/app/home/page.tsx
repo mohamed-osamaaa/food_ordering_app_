@@ -1,3 +1,4 @@
+"use client";
 import { CircleArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,26 +6,44 @@ import MenuItemCard from "@/components/menuItemCard"
 import pizza from "../../../public/pizza.png";
 import sallad1 from "../../../public/salladFF.png";
 import sallad2 from "../../../public/sallad2FF.png";
+import { useItemStore } from "@/store/useItemsStore";
+import React, { useEffect } from 'react';
 
-const items = [
-    {
-        image: "img1.jpeg",
-        title: "Pepperoni Pizza",
-        description: "Spicy pepperoni with cheese",
-    },
-    {
-        image: "img2.jpg",
-        title: "Cheese Burger",
-        description: "Beef patty with melted cheese",
-    },
-    {
-        image: "img3.png",
-        title: "Spaghetti Bolognese",
-        description: "Pasta with meat sauce",
-    },
-];
+// const items = [
+//     {
+//         image: "img1.jpeg",
+//         title: "Pepperoni Pizza",
+//         description: "Spicy pepperoni with cheese",
+//     },
+//     {
+//         image: "img2.jpg",
+//         title: "Cheese Burger",
+//         description: "Beef patty with melted cheese",
+//     },
+//     {
+//         image: "img3.png",
+//         title: "Spaghetti Bolognese",
+//         description: "Pasta with meat sauce",
+//     },
+// ];
 
-const HomePage = async () => {
+const HomePage = () => {
+    const { selectedItems, isLoading, error, fetchItemsByIds } = useItemStore();
+    const targetIds = [
+        '68482f4b3adc76545f59e2e8',
+        '68482fc23adc76545f59e312',
+        '684830253adc76545f59e343'
+    ];
+    useEffect(() => {
+        fetchItemsByIds(targetIds);
+    }, [fetchItemsByIds]);
+    // if (isLoading) {
+    //     return <div>Loading specific items...</div>;
+    // }
+
+    // if (error) {
+    //     return <div>Error: {error}</div>;
+    // }
     return (
         <div className="mx-32">
             <div className="flex justify-center items-center gap-5">
@@ -87,11 +106,12 @@ const HomePage = async () => {
                 </div>
             </div>
             <div className="flex justify-center items-center p-3 gap-15">
-                {items.map((item, index) => (
+                {selectedItems.map((item) => (
                     <MenuItemCard
-                        key={index}
-                        image={item.image}
-                        title={item.title}
+                        key={item._id}
+                        itemId={item._id}
+                        image={item.itemImage}
+                        title={item.name}
                         description={item.description}
                     />
                 ))}

@@ -45,6 +45,9 @@ const ItemSchema = new mongoose.Schema(
                 },
             },
         ],
+        price: {
+            type: Number,
+        }
     },
     {
         timestamps: true,

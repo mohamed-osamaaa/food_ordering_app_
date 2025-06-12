@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async (req, res) => {
     try {
-        const userId = req.currentUser._id;
+        const userId = req.currentUser.id;
 
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
@@ -54,7 +54,7 @@ export const createCheckoutSession = async (req, res) => {
 
 export const successPageDetails = async (req, res) => {
     try {
-        const userId = req.currentUser._id;
+        const userId = req.currentUser.id;
 
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
@@ -80,7 +80,7 @@ export const successPageDetails = async (req, res) => {
 
 export const stripeWebhook = async (req, res) => {
     try {
-        const userId = req.currentUser._id;
+        const userId = req.currentUser.id;
 
         const cart = await Cart.findOne({ user: userId }).populate(
             "items.item"
