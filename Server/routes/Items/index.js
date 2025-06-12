@@ -32,7 +32,7 @@ const upload = multer({
     fileFilter,
 });
 router.get("/", itemsController.getItems);
-router.get("/:categoryName", itemsController.getItemsBySameCategory);
+router.get("/itemByCategory/:categoryName", itemsController.getItemsBySameCategory);
 router.get("/:itemId", itemsController.getItem);
 router.post(
     "/",
