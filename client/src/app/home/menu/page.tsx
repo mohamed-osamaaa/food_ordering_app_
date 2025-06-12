@@ -33,21 +33,21 @@ const MenuPage = () => {
         fetchItems();
     }, [fetchItems]);
 
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-xl text-gray-600">Loading...</p>
-            </div>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="flex justify-center items-center h-screen">
+    //             <p className="text-xl text-gray-600">Loading...</p>
+    //         </div>
+    //     );
+    // }
 
-    if (error) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-xl text-red-600">Error: {error}</p>
-            </div>
-        );
-    }
+    // if (error) {
+    //     return (
+    //         <div className="flex justify-center items-center h-screen">
+    //             <p className="text-xl text-red-600">Error: {error}</p>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="container mx-auto p-4">
@@ -57,19 +57,18 @@ const MenuPage = () => {
                 categories.map((category: Category) => (
                     <section key={category._id} className="mb-12">
                         <h2 className="text-5xl text-red-500 text-center font-semibold capitalize mt-7 mb-24 italic">{category.name}</h2>
-                        {itemsByCategory[category.name.toLowerCase()]?.length > 0 ? (
+                        {itemsByCategory[category.name.toLowerCase()]?.length > 0 && (
                             <div className="flex flex-wrap justify-center items-center p-3 gap-16">
                                 {itemsByCategory[category.name.toLowerCase()].map((item: Item) => (
                                     <MenuItemCard
                                         key={item._id}
+                                        itemId={item._id}
                                         image={item.itemImage}
                                         title={item.name}
                                         description={item.description}
                                     />
                                 ))}
                             </div>
-                        ) : (
-                            <p className="text-gray-600">No items in this category</p>
                         )}
                     </section>
                 ))

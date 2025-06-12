@@ -9,6 +9,11 @@ const CartSchema = new mongoose.Schema(
                     ref: "Item",
                     required: true,
                 },
+                name: String,
+                itemImage: String,
+                selectedSize: String,
+                extraIngredients: [{ name: String, }],
+                price: Number, // final price for that unit
                 quantity: {
                     type: Number,
                     default: 1,
@@ -24,14 +29,15 @@ const CartSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        deliveryPrice: {
-            type: Number,
-            default: 0,
-        },
+        // deliveryPrice: {
+        //     type: Number,
+        //     default: 0,
+        // },
     },
     {
         timestamps: true,
     }
 );
+
 
 export default mongoose.model("Cart", CartSchema);
