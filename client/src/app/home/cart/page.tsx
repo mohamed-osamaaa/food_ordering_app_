@@ -1,12 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
 import { useCartStore } from "@/store/useCartStore";
+import { useCheckoutStore } from "@/store/useCheckoutStore"
 import Image from "next/image";
-import { Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 
 const CartPage = () => {
     const { getCart, cart, removeFromCart } = useCartStore();
+    const { createCheckoutSession, isCreatingSession, processWebhook } = useCheckoutStore();
 
     useEffect(() => {
         getCart();
@@ -32,6 +34,47 @@ const CartPage = () => {
 
     console.log(cart);
 
+    const handlePayment = async () => {
+        // Check if cart is empty
+        if (!cart?.items?.length) {
+            Swal.fire({
+                title: "Cart Empty",
+                text: "Please add items to your cart before proceeding to checkout.",
+                icon: "warning",
+                confirmButtonColor: "#ef4444",
+            });
+            return;
+        }
+
+        // Confirm payment
+        const result = await Swal.fire({
+            title: "Proceed to Payment?",
+            text: `Total amount: $${cart?.totalPrice?.toFixed(2) || "0.00"}`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, proceed to payment",
+            cancelButtonText: "Cancel",
+        });
+
+        if (result.isConfirmed) {
+            const success = await createCheckoutSession();
+            const webhookSuccess = await processWebhook();
+
+            // if (webhookSuccess) {
+            //     await getCart();
+            // }
+            if (!success || !webhookSuccess) {
+                Swal.fire({
+                    title: "Payment Failed",
+                    text: "Unable to process payment. Please try again.",
+                    icon: "error",
+                    confirmButtonColor: "#ef4444",
+                });
+            }
+        }
+    };
     return (
         <div className="px-8">
             <h2 className="text-center text-red-500 text-5xl font-bold my-10 mb-5">
@@ -90,15 +133,33 @@ const CartPage = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center col-span-3">Your cart is empty.</p>
+                    <p className="text-center col-span-3 font-bold text-2xl">Your cart is empty</p>
                 )}
             </div>
 
             {/* Total Price */}
             <div className="flex flex-col items-center mt-20 text-2xl font-semibold text-black">
                 Total: ${cart?.totalPrice?.toFixed(2) || "0.00"}
-                <button className="cursor-pointer mt-10 px-20 py-3 bg-red-500 text-white font-semibold rounded-4xl shadow hover:bg-red-600 transition duration-300">
-                    Pay
+                <button
+                    onClick={handlePayment}
+                    disabled={isCreatingSession || !cart?.items?.length}
+                    className={`
+                        flex items-center justify-center gap-2 mt-6 px-20 py-3 
+                        font-semibold rounded-full shadow transition duration-300
+                        ${isCreatingSession || !cart?.items?.length
+                            ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                            : 'bg-red-500 text-white hover:bg-red-600 cursor-pointer'
+                        }
+                    `}
+                >
+                    {isCreatingSession ? (
+                        <>
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                            Processing...
+                        </>
+                    ) : (
+                        'Pay'
+                    )}
                 </button>
             </div>
         </div>

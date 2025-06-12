@@ -21,7 +21,7 @@ export default function Home() {
             if (!authUser) {
                 router.push("/auth/login");
             } else if (authUser.role === "admin") {
-                router.push("/admin");
+                router.push("/admin/categories");
             } else {
                 router.push("/home");
             }
