@@ -1,4 +1,5 @@
 import categories from "../../models/categories.js";
+import Item from "../../models/items.js"
 
 const getAllCategories = async (req, res) => {
     try {
@@ -16,6 +17,38 @@ const getAllCategories = async (req, res) => {
     }
 };
 
+// const deleteCategory = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+
+//         if (!id) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Category ID is required",
+//             });
+//         }
+
+//         const category = await categories.findByIdAndDelete(id);
+
+//         if (!category) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: "Category not found",
+//             });
+//         }
+
+//         res.status(200).json({
+//             success: true,
+//             message: "Category deleted successfully",
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             success: false,
+//             message: "Server error",
+//             error: error.message,
+//         });
+//     }
+// };
 const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
@@ -27,6 +60,7 @@ const deleteCategory = async (req, res) => {
             });
         }
 
+        // Delete the category
         const category = await categories.findByIdAndDelete(id);
 
         if (!category) {
@@ -36,9 +70,12 @@ const deleteCategory = async (req, res) => {
             });
         }
 
+        // Delete all items that belong to this category
+        await Item.deleteMany({ categoryId: id });
+
         res.status(200).json({
             success: true,
-            message: "Category deleted successfully",
+            message: "Category and all related items deleted successfully",
         });
     } catch (error) {
         res.status(500).json({
@@ -48,6 +85,7 @@ const deleteCategory = async (req, res) => {
         });
     }
 };
+
 const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
