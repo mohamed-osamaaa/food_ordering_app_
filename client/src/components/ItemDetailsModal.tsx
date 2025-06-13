@@ -74,7 +74,7 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop p-4 overflow-y-auto">
             <div className="bg-white rounded-xl w-full max-w-2xl max-h-screen overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b">
