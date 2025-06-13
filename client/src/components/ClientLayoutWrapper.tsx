@@ -17,8 +17,16 @@ export function ClientLayoutWrapper({ children }: { children: React.ReactNode })
     useEffect(() => {
         if (isCheckingAuth || hasRedirected) return;
 
+        // if (!authUser) {
+        //     if (!pathname.startsWith('/auth')) {
+        //         setHasRedirected(true);
+        //         router.replace('/auth/login');
+        //     }
+        //     return;
+        // }
+
         if (!authUser) {
-            if (!pathname.startsWith('/auth')) {
+            if (pathname.startsWith('/home/cart')) {
                 setHasRedirected(true);
                 router.replace('/auth/login');
             }

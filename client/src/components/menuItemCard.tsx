@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { useItemStore } from "../store/useItemsStore";
 import ItemDetailsModal from "./ItemDetailsModal";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 const MenuItemCard = ({ image, title, description, itemId }) => {
     // try {
@@ -15,14 +17,20 @@ const MenuItemCard = ({ image, title, description, itemId }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const { fetchItemById, isLoading, error } = useItemStore();
+    const { authUser } = useAuthStore();
+    const router = useRouter();
 
     const imgURL = String(process.env.NEXT_PUBLIC_ITEM_IMAGES_SERVER_URL) + String(image);
 
     const handleAddToCart = async () => {
         try {
-            const item = await fetchItemById(itemId);
-            setSelectedItem(item);
-            setIsModalOpen(true);
+            if (!authUser) {
+                router.replace('/auth/login');
+            } else {
+                const item = await fetchItemById(itemId);
+                setSelectedItem(item);
+                setIsModalOpen(true);
+            }
         } catch (error) {
             console.error("Failed to fetch item details:", error);
         }
