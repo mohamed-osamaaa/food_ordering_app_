@@ -223,7 +223,7 @@ export default function ItemsPage() {
                                         });
                                         setSize({ size: "", price: "" });
                                     }}
-                                    className="bg-blue-500 text-white px-3 rounded hover:bg-blue-600 transition"
+                                    className="cursor-pointer bg-blue-500 text-white px-3 rounded hover:bg-blue-600 transition"
                                 >
                                     Add
                                 </button>
@@ -281,7 +281,7 @@ export default function ItemsPage() {
                                         });
                                         setExtraIngredient({ name: "", price: "" });
                                     }}
-                                    className="bg-blue-500 text-white px-3 rounded hover:bg-blue-600 transition"
+                                    className="cursor-pointer bg-blue-500 text-white px-3 rounded hover:bg-blue-600 transition"
                                 >
                                     Add
                                 </button>
@@ -306,7 +306,7 @@ export default function ItemsPage() {
                             {isEditing && (
                                 <button
                                     type="button"
-                                    className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
+                                    className="cursor-pointer bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
                                     onClick={handleDelete}
                                 >
                                     Delete Item
@@ -314,7 +314,7 @@ export default function ItemsPage() {
                             )}
                             <button
                                 type="submit"
-                                className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition ml-auto"
+                                className="cursor-pointer bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition ml-auto"
                             >
                                 {isEditing ? "Update" : "Create"}
                             </button>
