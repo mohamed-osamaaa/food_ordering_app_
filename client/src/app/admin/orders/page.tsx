@@ -62,7 +62,7 @@ export default function OrdersPage() {
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                             <button
                                                 onClick={() => handleSeeMore(order._id)}
-                                                className="text-indigo-600 hover:text-indigo-900 font-medium"
+                                                className="cursor-pointer text-indigo-600 hover:text-indigo-900 font-medium"
                                             >
                                                 See More
                                             </button>
@@ -123,7 +123,7 @@ export default function OrdersPage() {
                             <div className="mt-6 flex justify-end">
                                 <button
                                     onClick={closeModal}
-                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                    className="cursor-pointer px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                                 >
                                     Close
                                 </button>
