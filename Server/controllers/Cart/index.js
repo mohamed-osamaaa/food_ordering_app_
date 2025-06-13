@@ -77,16 +77,28 @@ export const addToCart = async (req, res) => {
 
         let cart = await Cart.findOne({ user: userId });
 
+        // if (!cart) {
+        //     cart = new Cart({
+        //         user: userId,
+        //         items: [newCartItem],
+        //     });
+        //     cart.totalPrice += price;
+        // } else {
+        //     cart.items.push(newCartItem);
+        //     cart.totalPrice += price;
+        // }
         if (!cart) {
             cart = new Cart({
                 user: userId,
                 items: [newCartItem],
+                totalPrice: 0, // Initialize totalPrice
             });
-            cart.totalPrice += price;
         } else {
             cart.items.push(newCartItem);
-            cart.totalPrice += price;
         }
+
+        cart.totalPrice += price * quantity;
+
 
         await cart.save();
         cart = await Cart.findById(cart._id);
