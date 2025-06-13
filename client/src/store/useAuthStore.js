@@ -22,13 +22,28 @@ export const useAuthStore = create((set, get) => ({
 
     login: async (data) => {
         set({ isLoggingIn: true });
+
         try {
             const res = await axiosInstance.post("/api/auth/login", data);
             set({ authUser: res.data.data });
             toast.success("Logged in successfully");
             return true;
         } catch (error) {
-            toast.error(error.response.data.message);
+            const response = error?.response?.data;
+
+            if (response?.errors && Array.isArray(response.errors)) {
+                const shownMessages = new Set();
+                response.errors.forEach((err) => {
+                    const msg = `${err.path}: ${err.msg}`;
+                    if (!shownMessages.has(msg)) {
+                        toast.error(msg);
+                        shownMessages.add(msg);
+                    }
+                });
+            } else {
+                toast.error(response?.message || "Login failed");
+            }
+
             return false;
         } finally {
             set({ isLoggingIn: false });
@@ -74,7 +89,21 @@ export const useAuthStore = create((set, get) => ({
             toast.success("Account created successfully");
             return true;
         } catch (error) {
-            toast.error(error?.response?.data?.message || "Registration failed");
+            const response = error?.response?.data;
+
+            if (response?.errors && Array.isArray(response.errors)) {
+                const shownMessages = new Set();
+                response.errors.forEach((err) => {
+                    const msg = `${err.path}: ${err.msg}`;
+                    if (!shownMessages.has(msg)) {
+                        toast.error(msg);
+                        shownMessages.add(msg);
+                    }
+                });
+            } else {
+                toast.error(response?.message || "Registration failed");
+            }
+
             return false;
         } finally {
             set({ isRegister: false });

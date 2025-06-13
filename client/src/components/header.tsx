@@ -1,18 +1,47 @@
 'use client';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { ShoppingCartIcon, MenuIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCartStore } from '@/store/useCartStore';
+import { AnimatePresence, motion } from 'framer-motion';
+
 
 const Header = () => {
     const { authUser, logout } = useAuthStore();
+    const { itemCount, getCart } = useCartStore();
+
     const handleClick = async () => {
         await logout();
     };
-    const { itemCount } = useCartStore();
+
+    useEffect(() => {
+        if (authUser) {
+            getCart();
+        }
+    }, [authUser, getCart]);
+
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const mobileMenuVariants = {
+        hidden: {
+            opacity: 0,
+            y: -20,
+            transition: { duration: 0.2 },
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.3 },
+        },
+        exit: {
+            opacity: 0,
+            y: -20,
+            transition: { duration: 0.2 },
+        },
+    };
+
 
     return (
         <header className="w-full px-4 py-4 bg-gray-200 sm:bg-transparent">
@@ -63,50 +92,58 @@ const Header = () => {
                 </button>
             </div>
 
-            {menuOpen && (
-                <div className="lg:hidden mt-4 space-y-4 flex justify-between px-4">
-                    <div className='flex flex-col items-star gap-4t'>
-                        {["home", "menu", "about", "contact"].map((page) => (
-                            <Link
-                                key={page}
-                                href={page === "home" ? "/" : `/home/${page}`}
-                                className="font-semibold text-gray-700 hover:text-red-500 transition-colors duration-200"
-                                onClick={() => setMenuOpen(false)}
-                            >
-                                {page.charAt(0).toUpperCase() + page.slice(1)}
-                            </Link>
-                        ))}
-                    </div>
-                    <div>
-                        {authUser ? (
-                            <div className='flex flex-col items-end gap-4 w-full'>
-                                <div className='flex justify-end gap-6'>
-                                    <div className="w-[35px] h-[35px] rounded-full overflow-hidden">
-                                        <Image
-                                            src={authUser.profileImage}
-                                            alt="profile"
-                                            width={35}
-                                            height={35}
-                                            className="object-cover w-full h-full"
-                                        />
+            <AnimatePresence>
+                {menuOpen && (
+                    <motion.div
+                        className="lg:hidden mt-4 space-y-4 flex justify-between px-4"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={mobileMenuVariants}
+                    >
+                        <div className='flex flex-col items-star gap-4t'>
+                            {["home", "menu", "about", "contact"].map((page) => (
+                                <Link
+                                    key={page}
+                                    href={page === "home" ? "/" : `/home/${page}`}
+                                    className="font-semibold text-gray-700 hover:text-red-500 transition-colors duration-200"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    {page.charAt(0).toUpperCase() + page.slice(1)}
+                                </Link>
+                            ))}
+                        </div>
+                        <div>
+                            {authUser ? (
+                                <div className='flex flex-col items-end gap-4 w-full'>
+                                    <div className='flex justify-end gap-6'>
+                                        <div className="w-[35px] h-[35px] rounded-full overflow-hidden">
+                                            <Image
+                                                src={authUser.profileImage}
+                                                alt="profile"
+                                                width={35}
+                                                height={35}
+                                                className="object-cover w-full h-full"
+                                            />
+                                        </div>
+                                        <Link href="/home/cart" className="relative mt-2">
+                                            <ShoppingCartIcon className="size-6" />
+                                            {itemCount > 0 && (
+                                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                                    {itemCount}
+                                                </span>
+                                            )}
+                                        </Link>
                                     </div>
-                                    <Link href="/home/cart" className="relative mt-2">
-                                        <ShoppingCartIcon className="size-6" />
-                                        {itemCount > 0 && (
-                                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                                {itemCount}
-                                            </span>
-                                        )}
-                                    </Link>
+                                    <button onClick={handleClick} className='mt-2 bg-red-500 text-white font-bold py-1 px-4 rounded-3xl'>Logout</button>
                                 </div>
-                                <button onClick={handleClick} className='mt-2 bg-red-500 text-white font-bold py-1 px-4 rounded-3xl'>Logout</button>
-                            </div>
-                        ) : (
-                            <Link className='bg-red-500 text-white font-bold py-2 px-6 rounded-3xl' href="/auth/login" onClick={() => setMenuOpen(false)}>Login</Link>
-                        )}
-                    </div>
-                </div>
-            )}
+                            ) : (
+                                <Link className='bg-red-500 text-white font-bold py-2 px-6 rounded-3xl' href="/auth/login" onClick={() => setMenuOpen(false)}>Login</Link>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </header>
     );
 };

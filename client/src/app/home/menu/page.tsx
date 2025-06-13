@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useItemStore } from '@/store/useItemsStore'; // Adjust path based on your project structure
-import MenuItemCard from '../../../components/menuItemCard'; // Adjust path to where MenuItemCard is located
+import { useItemStore } from '@/store/useItemsStore';
+import MenuItemCard from '../../../components/menuItemCard';
+import { motion } from 'framer-motion';
 
 // Type definitions (same as in store for consistency)
 interface Category {
@@ -27,6 +28,19 @@ interface Item {
     updatedAt: string;
     __v: number;
 }
+const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+};
+
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.15, // delay between item animations
+        },
+    },
+};
 
 const MenuPage = () => {
     const { categories, itemsByCategory, isLoading, error, fetchItems } = useItemStore();
@@ -50,7 +64,6 @@ const MenuPage = () => {
     //         </div>
     //     );
     // }
-
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             {categories.length === 0 ? (
@@ -61,19 +74,30 @@ const MenuPage = () => {
                         <h2 className="text-3xl sm:text-4xl md:text-5xl text-red-500 text-center font-semibold capitalize mt-7 mb-12 italic">
                             {category.name}
                         </h2>
-                        {itemsByCategory[category.name.toLowerCase()]?.length > 0 && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                                {itemsByCategory[category.name.toLowerCase()].map((item: Item) => (
+                        <motion.div
+                            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 justify-items-center"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            {itemsByCategory[category.name.toLowerCase()].map((item: Item) => (
+                                <motion.div
+                                    key={item._id}
+                                    variants={itemVariants}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true, amount: 0.2 }}
+                                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                                >
                                     <MenuItemCard
-                                        key={item._id}
                                         itemId={item._id}
                                         image={item.itemImage}
                                         title={item.name}
                                         description={item.description}
                                     />
-                                ))}
-                            </div>
-                        )}
+                                </motion.div>
+                            ))}
+                        </motion.div>
                     </section>
                 ))
             )}

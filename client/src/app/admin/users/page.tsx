@@ -1,17 +1,52 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUsersStore } from "@/store/useUsersStore";
 
 const UsersPage = () => {
-    const { users, isLoading, fetchUsers, makeAdmin } = useUsersStore();
+    const { users, isLoading, fetchUsers, makeAdmin, searchByName } = useUsersStore();
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         fetchUsers();
     }, []);
-    console.log(users);
+
+    const handleSearch = async () => {
+        if (searchTerm.trim() === "") {
+            fetchUsers();
+        } else {
+            await searchByName(searchTerm);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+    };
 
     return (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 mt-10">
+            <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
+                <input
+                    type="text"
+                    placeholder="Search by name"
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                    className="w-full sm:flex-1 px-4 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+                />
+                <button
+                    onClick={handleSearch}
+                    className="cursor-pointer w-full sm:w-auto px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                >
+                    Search
+                </button>
+            </div>
+
             <div className="space-y-4">
                 {users.map((user) => (
                     <div
@@ -25,7 +60,7 @@ const UsersPage = () => {
                         {user.role !== "admin" && (
                             <button
                                 onClick={() => makeAdmin(user._id)}
-                                className="w-full sm:w-auto px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition"
+                                className="cursor-pointer w-full sm:w-auto px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition"
                             >
                                 Make Admin
                             </button>
