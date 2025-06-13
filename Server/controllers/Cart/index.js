@@ -110,7 +110,7 @@ export const deleteFromCart = async (req, res) => {
 
         let cart = await Cart.findOne({ user: userId });
         if (!cart) {
-            return res.status(404).json({ success: false, message: "Cart not found." });
+            return res.status(404).json({ success: false, message: "Cart is empty." });
         }
 
         const itemIndex = cart.items.findIndex((i) => i._id.toString() === itemId);
@@ -149,7 +149,7 @@ export const getUserCart = async (req, res) => {
         const cart = await Cart.findOne({ user: userId });
 
         if (!cart) {
-            return res.status(404).json({ success: false, message: "Cart not found." });
+            return res.status(404).json({ success: false, message: "Cart is empty." });
         }
 
         const itemCount = cart.items.reduce((sum, i) => sum + i.quantity, 0);
