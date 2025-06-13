@@ -8,6 +8,8 @@ import sallad1 from "../../../public/salladFF.png";
 import sallad2 from "../../../public/sallad2FF.png";
 import { useItemStore } from "@/store/useItemsStore";
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+
 
 // const items = [
 //     {
@@ -26,6 +28,10 @@ import React, { useEffect } from 'react';
 //         description: "Pasta with meat sauce",
 //     },
 // ];
+const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 },
+};
 
 const HomePage = () => {
     const { selectedItems, isLoading, error, fetchItemsByIds } = useItemStore();
@@ -110,17 +116,35 @@ const HomePage = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center p-3">
+            <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center p-3"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={{
+                    visible: {
+                        transition: { staggerChildren: 0.15 },
+                    },
+                }}
+            >
                 {selectedItems.map((item) => (
-                    <MenuItemCard
+                    <motion.div
                         key={item._id}
-                        itemId={item._id}
-                        image={item.itemImage}
-                        title={item.name}
-                        description={item.description}
-                    />
+                        variants={itemVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                    >
+                        <MenuItemCard
+                            itemId={item._id}
+                            image={item.itemImage}
+                            title={item.name}
+                            description={item.description}
+                        />
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
 
 
             <section className="text-center my-16 px-4" id="about">

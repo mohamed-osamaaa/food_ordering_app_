@@ -31,4 +31,13 @@ export const useUsersStore = create((set, get) => ({
             toast.error(error?.response?.data?.message || "Failed to make user admin");
         }
     },
+
+    searchByName: async (name) => {
+        try {
+            const res = await axiosInstance.post(`/api/users/search`, { name });
+            set({ users: res.data.data });
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Failed to make user admin");
+        }
+    },
 }));

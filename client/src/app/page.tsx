@@ -18,7 +18,7 @@ export default function Home() {
     useEffect(() => {
         if (!isCheckingAuth) {
             if (!authUser) {
-                router.push("/auth/login");
+                router.push("/home");
             } else if (authUser.role === "admin") {
                 router.push("/admin/categories");
             } else {

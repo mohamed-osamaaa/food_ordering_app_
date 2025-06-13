@@ -40,3 +40,30 @@ export const makeUserAdmin = async (req, res) => {
         });
     }
 };
+export const searchByName = async (req, res) => {
+    const { name } = req.body;
+
+    try {
+        // ignores case sensitivity (thanks to the 'i' flag)
+        const users = await User.find({ fullname: { $regex: name, $options: 'i' } });
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No users found with that name",
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Users found successfully",
+            data: users,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message,
+        });
+    }
+};
