@@ -6,6 +6,8 @@ import {
   Geist_Mono,
 } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
+import { ClientLayoutWrapper } from '@/components/ClientLayoutWrapper';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +41,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <Toaster position="top-center" reverseOrder={false} />
-        {children}
+        <ClientLayoutWrapper>
+          {children}
+        </ClientLayoutWrapper>
       </body>
     </html>
   );

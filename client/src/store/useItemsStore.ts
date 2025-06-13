@@ -15,7 +15,9 @@ interface Item {
     _id: string;
     name: string;
     description: string;
-    category: string; // Category ID (string)
+    category: {
+        name: string;
+    }; // Category ID (string)
     itemImage: string;
     sizes: { size: string; price: number; _id: string }[];
     extraIngredients: { name: string; price: number; _id: string }[];
@@ -55,11 +57,11 @@ export const useItemStore = create<ItemStore>((set, get) => ({
             const itemsRes = await axiosInstance.get('/api/items');
             const items: Item[] = itemsRes.data.data;
 
-            // Create a map of category ID to category name
-            const categoryMap = categories.reduce((acc, category) => {
-                acc[category._id] = category.name.toLowerCase();
-                return acc;
-            }, {} as Record<string, string>);
+            // // Create a map of category ID to category name
+            // const categoryMap = categories.reduce((acc, category) => {
+            //     acc[category._id] = category.name.toLowerCase();
+            //     return acc;
+            // }, {} as Record<string, string>);
 
             // Initialize itemsByCategory with empty arrays for each category
             const itemsByCategory = categories.reduce((acc, category) => {
@@ -67,10 +69,18 @@ export const useItemStore = create<ItemStore>((set, get) => ({
                 return acc;
             }, {} as Record<string, Item[]>);
 
+            // // Categorize items
+            // items.forEach(item => {
+            //     const categoryName = categoryMap[item.category];
+            //     if (categoryName && itemsByCategory[categoryName]) {
+            //         itemsByCategory[categoryName].push(item);
+            //     }
+            // });
+
             // Categorize items
             items.forEach(item => {
-                const categoryName = categoryMap[item.category];
-                if (categoryName && itemsByCategory[categoryName]) {
+                const categoryName = item.category.name.toLowerCase();
+                if (itemsByCategory[categoryName]) {
                     itemsByCategory[categoryName].push(item);
                 }
             });
