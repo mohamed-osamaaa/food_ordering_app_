@@ -187,10 +187,4 @@ https://github.com/user-attachments/assets/f216623f-d2ae-44d4-8d17-2e6bde84e4b9
 
 
 
----
 
-## 🚀 Live Deployment
-
-Experience the app live:
-
-* [Live Site on Vercel](https://your-vercel-deployment.vercel.app)
