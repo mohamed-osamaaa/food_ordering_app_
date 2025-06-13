@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from 'helmet';
-// import csurf from 'csurf';
 import path from "path";
 
 import connectDB from "./config/db.js";
@@ -24,7 +23,6 @@ connectDB();
 
 app.use(cookieParser());
 app.use(helmet());
-// app.use(csurf({ cookie: true }));
 app.use(
     cors({
         origin: process.env.CLIENT_URL,
@@ -44,9 +42,7 @@ app.use("/api/items", itemsRoute);
 app.use("/api/cart", cartRoutes);
 app.use("/api/check-out", stripeRoutes);
 
-// app.get("/api/csrf-token", (req, res) => {
-//     res.status(200).json({ csrfToken: req.csrfToken() });
-// });
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
