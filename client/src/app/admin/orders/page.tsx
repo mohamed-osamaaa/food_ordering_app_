@@ -27,19 +27,19 @@ export default function OrdersPage() {
     }
 
     return (
-        <div className="min-h-screen p-4 md:p-8">
+        <div className="min-h-screen p-4 sm:p-6 md:p-8">
             <div className="max-w-7xl mx-auto">
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Orders Management</h1>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-6">Orders Management</h1>
 
                 {/* Orders Table */}
                 <div className="bg-white shadow-md rounded-lg overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
+                    <table className="min-w-full divide-y divide-gray-200 text-sm">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Price</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Price</th>
+                                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
+                                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -50,19 +50,19 @@ export default function OrdersPage() {
                             ) : (
                                 orders.map((order) => (
                                     <tr key={order._id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-700">
                                             {order.user?.fullname || 'N/A'}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-700">
                                             ${order.totalPrice.toFixed(2)}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-700">
                                             {new Date(order.createdAt).toLocaleDateString()}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                        <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                                             <button
                                                 onClick={() => handleSeeMore(order._id)}
-                                                className="cursor-pointer text-indigo-600 hover:text-indigo-900 font-medium"
+                                                className="text-indigo-600 hover:text-indigo-900 font-medium"
                                             >
                                                 See More
                                             </button>
@@ -76,10 +76,10 @@ export default function OrdersPage() {
 
                 {/* Order Details Modal */}
                 {isModalOpen && selectedOrder && (
-                    <div className="fixed inset-0 backdrop flex items-center justify-center z-50">
-                        <div className="bg-white rounded-lg max-w-2xl w-full p-6 max-h-[80vh] overflow-y-auto">
+                    <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 px-2 sm:px-4">
+                        <div className="bg-white rounded-lg w-full max-w-2xl p-4 sm:p-6 max-h-[80vh] overflow-y-auto">
                             <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-xl font-bold text-gray-800">Order Details</h2>
+                                <h2 className="text-lg sm:text-xl font-bold text-gray-800">Order Details</h2>
                                 <button
                                     onClick={closeModal}
                                     className="text-red-500 hover:text-gray-700 text-xl font-bold cursor-pointer border-2 border-red-500 hover:border-gray-700 rounded-full"
@@ -88,23 +88,23 @@ export default function OrdersPage() {
                                 </button>
                             </div>
 
-                            <div className="space-y-4">
+                            <div className="space-y-4 text-sm sm:text-base">
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500">User</h3>
+                                    <h3 className="font-medium text-gray-500">User</h3>
                                     <p className="text-gray-800">{selectedOrder.user?.fullname || 'N/A'}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500">Total Price</h3>
+                                    <h3 className="font-medium text-gray-500">Total Price</h3>
                                     <p className="text-gray-800">${selectedOrder.totalPrice.toFixed(2)}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500">Created At</h3>
+                                    <h3 className="font-medium text-gray-500">Created At</h3>
                                     <p className="text-gray-800">
                                         {new Date(selectedOrder.createdAt).toLocaleString()}
                                     </p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500">Items</h3>
+                                    <h3 className="font-medium text-gray-500">Items</h3>
                                     <ul className="mt-2 space-y-2">
                                         {selectedOrder.items.map((orderItem, index) => (
                                             <li key={index} className="border-t pt-2">
@@ -123,7 +123,7 @@ export default function OrdersPage() {
                             <div className="mt-6 flex justify-end">
                                 <button
                                     onClick={closeModal}
-                                    className="cursor-pointer px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                                 >
                                     Close
                                 </button>

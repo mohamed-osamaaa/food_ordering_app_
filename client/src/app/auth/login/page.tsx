@@ -18,13 +18,12 @@ function Login() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         const success = await login(formData);
         if (success) router.replace("/");
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg mt-38 border-2 border-red-500">
+        <div className="w-full max-w-md mx-auto px-4 sm:px-6 py-8 bg-white shadow-md rounded-lg mt-20 sm:mt-32 border-2 border-red-500">
             <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
                 Login
             </h1>
@@ -68,7 +67,7 @@ function Login() {
 
                 <button
                     type="submit"
-                    className="btn !bg-red-500 hover:bg-red-600 text-white py-2 rounded w-full cursor-pointer shadow-md transition-colors duration-200"
+                    className="btn !bg-red-500 hover:bg-red-600 text-white py-2 rounded w-full cursor-pointer shadow-md transition-colors duration-200 flex items-center justify-center gap-2"
                     disabled={isLoggingIn}
                 >
                     {isLoggingIn ? (

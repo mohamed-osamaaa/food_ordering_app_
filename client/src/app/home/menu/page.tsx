@@ -52,15 +52,17 @@ const MenuPage = () => {
     // }
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             {categories.length === 0 ? (
                 <p className="text-center text-gray-600">No categories available</p>
             ) : (
                 categories.map((category: Category) => (
-                    <section key={category._id} className="mb-12">
-                        <h2 className="text-5xl text-red-500 text-center font-semibold capitalize mt-7 mb-24 italic">{category.name}</h2>
+                    <section key={category._id} className="mb-16">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl text-red-500 text-center font-semibold capitalize mt-7 mb-12 italic">
+                            {category.name}
+                        </h2>
                         {itemsByCategory[category.name.toLowerCase()]?.length > 0 && (
-                            <div className="flex flex-wrap justify-center items-center p-3 gap-16">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                                 {itemsByCategory[category.name.toLowerCase()].map((item: Item) => (
                                     <MenuItemCard
                                         key={item._id}

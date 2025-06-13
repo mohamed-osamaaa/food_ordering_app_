@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { X } from 'lucide-react';
-import { useCartStore } from "../store/useCartStore"
+import { useCartStore } from "../store/useCartStore";
 
 const ItemDetailsModal = ({ item, isOpen, onClose }) => {
     const [quantity, setQuantity] = useState(1);
@@ -53,26 +53,8 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
 
         return basePrice * quantity;
     };
+
     const handleAddToCart = async () => {
-        // const cartItem = {
-        //     ...item,
-        //     quantity,
-        //     selectedSize,
-        //     selectedExtraIngredients
-        // };
-        // console.log('Adding to cart:', cartItem);
-        // onClose();
-        //
-        // console.log('item:', item);
-        // item.quantity = quantity;
-        // item.sizes.size = selectedSize;
-        // item.extraIngredients.name = selectedExtraIngredients;
-        // item.price = (await calculateTotalPrice()).toFixed(2);
-        // console.log('Updated item:', item);
-        // await addToCart(item);
-        // console.log("success");
-        // onClose();
-        //
         const totalPrice = await calculateTotalPrice();
         const cartItem = {
             _id: item._id,
@@ -82,7 +64,6 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
             extraIngredients: Object.keys(selectedExtraIngredients)
                 .filter(name => selectedExtraIngredients[name])
                 .map(name => ({ name })),
-
             price: totalPrice.toFixed(2),
             quantity,
         };
@@ -93,8 +74,8 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop">
-            <div className="bg-white rounded-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-y-auto">
+            <div className="bg-white rounded-xl w-full max-w-2xl max-h-screen overflow-y-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center p-6 border-b">
                     <h2 className="text-2xl font-bold text-gray-800">Item Details</h2>
@@ -110,7 +91,7 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
                 <div className="p-6">
                     {/* Image and Basic Info */}
                     <div className="flex flex-col md:flex-row gap-6 mb-6">
-                        <div className="md:w-1/2">
+                        <div className="md:w-1/2 w-full">
                             <div className="w-full h-64 overflow-hidden rounded-lg">
                                 <Image
                                     src={imgURL}
@@ -121,7 +102,7 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
                                 />
                             </div>
                         </div>
-                        <div className="md:w-1/2">
+                        <div className="md:w-1/2 w-full">
                             <h3 className="text-xl font-semibold text-gray-800 mb-2">
                                 {item.name}
                             </h3>
@@ -162,7 +143,7 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
                     {item.extraIngredients && item.extraIngredients.length > 0 && (
                         <div className="mb-6">
                             <h4 className="text-lg font-semibold text-gray-800 mb-3">Extra Ingredients</h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {item.extraIngredients.map((ingredient) => (
                                     <label
                                         key={ingredient._id}
@@ -207,7 +188,7 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
                     </div>
 
                     {/* Add to Cart Button */}
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <button
                             onClick={onClose}
                             className="flex-1 px-6 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"

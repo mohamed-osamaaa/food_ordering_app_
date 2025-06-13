@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import Swal from "sweetalert2";
 
-
 export default function CategoriesPage() {
     const {
         fetchCategories,
@@ -40,7 +39,7 @@ export default function CategoriesPage() {
     return (
         <div className="max-w-2xl mx-auto p-4 space-y-6 mt-16">
             {/* Create New Category */}
-            <div className="flex gap-5 mb-10">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-5 mb-10">
                 <input
                     type="text"
                     placeholder="New category name"
@@ -50,7 +49,7 @@ export default function CategoriesPage() {
                 />
                 <button
                     onClick={handleCreate}
-                    className="cursor-pointer bg-red-500 text-white px-8 py-2 rounded hover:bg-red-600"
+                    className="w-full md:w-auto cursor-pointer bg-red-500 text-white px-8 py-2 rounded hover:bg-red-600"
                 >
                     Add
                 </button>
@@ -61,7 +60,7 @@ export default function CategoriesPage() {
                 {categories.map((category) => (
                     <li
                         key={category._id}
-                        className="flex justify-between items-center border border-red-500 rounded px-3 py-2"
+                        className="flex flex-col md:flex-row md:justify-between md:items-center border border-red-500 rounded px-3 py-2 gap-3"
                     >
                         {editId === category._id ? (
                             <>
@@ -69,9 +68,9 @@ export default function CategoriesPage() {
                                     type="text"
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
-                                    className="border focus:outline-none border-red-500 border-gray-300 px-2 py-1 rounded w-full mr-2"
+                                    className="border focus:outline-none border-red-500 px-2 py-1 rounded w-full"
                                 />
-                                <div className="flex gap-3">
+                                <div className="flex flex-col sm:flex-row gap-2 md:gap-3">
                                     <button
                                         onClick={handleUpdate}
                                         className="cursor-pointer bg-green-500 text-white px-3 py-1 rounded"
@@ -88,14 +87,14 @@ export default function CategoriesPage() {
                             </>
                         ) : (
                             <>
-                                <span>{category.name}</span>
-                                <div className="flex gap-5">
+                                <span className="break-words">{category.name}</span>
+                                <div className="flex flex-col sm:flex-row gap-2 md:gap-5">
                                     <button
                                         onClick={() => {
                                             setEditId(category._id);
                                             setEditName(category.name);
                                         }}
-                                        className="cursor-pointer bg-yellow-500 text-white px-8 py-2 rounded hover:bg-yellow-600"
+                                        className="cursor-pointer bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
                                     >
                                         Edit
                                     </button>
@@ -116,7 +115,7 @@ export default function CategoriesPage() {
                                                 }
                                             });
                                         }}
-                                        className="cursor-pointer bg-red-500 text-white px-8 py-2 rounded hover:bg-red-600"
+                                        className="cursor-pointer bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
                                     >
                                         Delete
                                     </button>
