@@ -17,7 +17,9 @@ interface Item {
     _id: string;
     name: string;
     description: string;
-    category: string;
+    category: {
+        name: string;
+    };
     itemImage: string;
     sizes: { size: string; price: number; _id: string }[];
     extraIngredients: { name: string; price: number; _id: string }[];
