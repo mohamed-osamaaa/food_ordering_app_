@@ -81,8 +81,8 @@ export const addToCart = async (req, res) => {
             cart = new Cart({
                 user: userId,
                 items: [newCartItem],
-                totalPrice: price,
             });
+            cart.totalPrice += price;
         } else {
             cart.items.push(newCartItem);
             cart.totalPrice += price;
