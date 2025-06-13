@@ -16,7 +16,6 @@ export default function Home() {
     }, [checkAuth]);
 
     useEffect(() => {
-        // TODO: make it in switch case
         if (!isCheckingAuth) {
             if (!authUser) {
                 router.push("/auth/login");
