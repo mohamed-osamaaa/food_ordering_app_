@@ -164,3 +164,33 @@ GitHub: [@mohamed-osamaaa](https://github.com/mohamed-osamaaa)
 ## 📜 License
 
 This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## 🎥 Demo Videos
+
+Watch key features in action:
+
+
+https://github.com/user-attachments/assets/311ea8a6-56b7-4035-bcda-2977b96ce73a
+
+
+
+
+
+https://github.com/user-attachments/assets/68ad4493-cafb-4d95-b5a1-b76b7d0ad1af
+
+
+
+
+https://github.com/user-attachments/assets/f216623f-d2ae-44d4-8d17-2e6bde84e4b9
+
+
+
+---
+
+## 🚀 Live Deployment
+
+Experience the app live:
+
+* [Live Site on Vercel](https://your-vercel-deployment.vercel.app)
