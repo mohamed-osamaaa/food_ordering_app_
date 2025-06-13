@@ -76,20 +76,20 @@ const CartPage = () => {
         }
     };
     return (
-        <div className="px-8">
-            <h2 className="text-center text-red-500 text-5xl font-bold my-10 mb-5">
+        <div className="px-4 md:px-8">
+            <h2 className="text-center text-red-500 text-4xl md:text-5xl font-bold my-10 mb-5">
                 Cart
             </h2>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {cart?.items?.length > 0 ? (
                     cart.items.map((item) => (
                         <div
                             key={item._id}
-                            className="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow"
+                            className="flex flex-col sm:flex-row items-center justify-between bg-gray-100 p-4 rounded-lg shadow"
                         >
                             {/* Image */}
-                            <div className="w-40 h-40 relative">
+                            <div className="w-40 h-40 relative flex-shrink-0">
                                 <Image
                                     src={`${process.env.NEXT_PUBLIC_ITEM_IMAGES_SERVER_URL}${item.itemImage}`}
                                     alt={item.name}
@@ -99,8 +99,8 @@ const CartPage = () => {
                             </div>
 
                             {/* Info */}
-                            <div className="flex-1 ml-7">
-                                <h3 className="text-lg font-bold mb-5">{item.name}</h3>
+                            <div className="flex-1 mt-4 sm:mt-0 sm:ml-7 text-center sm:text-left">
+                                <h3 className="text-lg font-bold mb-3">{item.name}</h3>
                                 <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
 
                                 {item.selectedSize && (
@@ -118,7 +118,7 @@ const CartPage = () => {
                                     </div>
                                 )}
 
-                                <p className="text-sm text-green-600">
+                                <p className="text-sm text-green-600 mt-2">
                                     Item Total: ${item.price.toFixed(2)}
                                 </p>
                             </div>
@@ -126,25 +126,25 @@ const CartPage = () => {
                             {/* Delete icon */}
                             <button
                                 onClick={() => handleDelete(item._id)}
-                                className="text-red-500 hover:text-red-700 cursor-pointer bg-gray-200 p-2 rounded-2xl"
+                                className="text-red-500 hover:text-red-700 cursor-pointer bg-gray-200 p-2 rounded-2xl mt-4 sm:mt-0"
                             >
                                 <Trash2 />
                             </button>
                         </div>
                     ))
                 ) : (
-                    <p className="text-center col-span-3 font-bold text-2xl">Your cart is empty</p>
+                    <p className="text-center col-span-full font-bold text-2xl">Your cart is empty</p>
                 )}
             </div>
 
             {/* Total Price */}
-            <div className="flex flex-col items-center mt-20 text-2xl font-semibold text-black">
+            <div className="flex flex-col items-center mt-20 text-xl md:text-2xl font-semibold text-black text-center">
                 Total: ${cart?.totalPrice?.toFixed(2) || "0.00"}
                 <button
                     onClick={handlePayment}
                     disabled={isCreatingSession || !cart?.items?.length}
                     className={`
-                        flex items-center justify-center gap-2 mt-6 px-20 py-3 
+                        flex items-center justify-center gap-2 mt-6 px-12 sm:px-20 py-3 
                         font-semibold rounded-full shadow transition duration-300
                         ${isCreatingSession || !cart?.items?.length
                             ? 'bg-gray-400 text-gray-600 cursor-not-allowed'

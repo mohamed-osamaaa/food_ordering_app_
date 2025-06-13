@@ -34,11 +34,11 @@ function Register() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-18 border-2 border-red-500 flex flex-col md:flex-row">
-            <div className="md:w-1/2 flex flex-col items-center justify-center border-r md:pr-6 mb-6 md:mb-0">
+        <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-white shadow-md rounded-lg mt-10 border-2 border-red-500 flex flex-col md:flex-row gap-6">
+            <div className="w-full md:w-1/2 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r md:pr-6 pb-6 md:pb-0">
                 <label
                     htmlFor="profileImage"
-                    className="w-40 h-40 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-red-500 transition"
+                    className="w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-red-500 transition"
                 >
                     {formData.profileImage ? (
                         <img
@@ -61,7 +61,7 @@ function Register() {
                 />
             </div>
 
-            <div className="md:w-1/2 md:pl-6">
+            <div className="w-full md:w-1/2">
                 <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
                     Register
                 </h1>
@@ -75,10 +75,7 @@ function Register() {
                             type="text"
                             value={formData.fullname}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    fullname: e.target.value,
-                                })
+                                setFormData({ ...formData, fullname: e.target.value })
                             }
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none"
                             required
@@ -93,10 +90,7 @@ function Register() {
                             type="email"
                             value={formData.email}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    email: e.target.value,
-                                })
+                                setFormData({ ...formData, email: e.target.value })
                             }
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none"
                             required
@@ -111,10 +105,7 @@ function Register() {
                             type="password"
                             value={formData.password}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    password: e.target.value,
-                                })
+                                setFormData({ ...formData, password: e.target.value })
                             }
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none"
                             required
@@ -129,10 +120,7 @@ function Register() {
                             type="tel"
                             value={formData.phone}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    phone: e.target.value,
-                                })
+                                setFormData({ ...formData, phone: e.target.value })
                             }
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none"
                             required
@@ -147,10 +135,7 @@ function Register() {
                             type="text"
                             value={formData.address}
                             onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    address: e.target.value,
-                                })
+                                setFormData({ ...formData, address: e.target.value })
                             }
                             className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 outline-none"
                             required
@@ -175,10 +160,7 @@ function Register() {
 
                 <p className="mt-4 text-sm text-center text-gray-600">
                     Already have an account?{" "}
-                    <Link
-                        href="/auth/login"
-                        className="text-red-500 hover:underline"
-                    >
+                    <Link href="/auth/login" className="text-red-500 hover:underline">
                         Login
                     </Link>
                 </p>

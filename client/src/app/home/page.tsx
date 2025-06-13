@@ -2,7 +2,7 @@
 import { CircleArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import MenuItemCard from "@/components/menuItemCard"
+import MenuItemCard from "@/components/menuItemCard";
 import pizza from "../../../public/pizza.png";
 import sallad1 from "../../../public/salladFF.png";
 import sallad2 from "../../../public/sallad2FF.png";
@@ -34,9 +34,11 @@ const HomePage = () => {
         '68482fc23adc76545f59e312',
         '684830253adc76545f59e343'
     ];
+
     useEffect(() => {
         fetchItemsByIds(targetIds);
     }, [fetchItemsByIds]);
+
     // if (isLoading) {
     //     return <div>Loading specific items...</div>;
     // }
@@ -44,53 +46,54 @@ const HomePage = () => {
     // if (error) {
     //     return <div>Error: {error}</div>;
     // }
+
     return (
-        <div className="mx-32">
-            <div className="flex justify-center items-center gap-5">
-                <div className="flex flex-col gap-10 mr-24">
-                    <p className="text-5xl font-bold w-75">
+        <div className="mx-4 md:mx-12 lg:mx-20 xl:mx-32 mt-10">
+            <div className="flex flex-col-reverse lg:flex-row justify-center items-center gap-10 lg:gap-5">
+                <div className="flex flex-col gap-8 lg:gap-10 lg:mr-24 text-center lg:text-left">
+                    <p className="text-4xl sm:text-5xl font-bold">
                         Everything is better with a{" "}
                         <span className="text-red-500">Pizza</span>
                     </p>
-                    <p className="text-gray-600 w-75">
-                        Pizza is the missing piece that makes every day
-                        complete, a simple yet delicious joy in life
+                    <p className="text-gray-600">
+                        Pizza is the missing piece that makes every day complete, a simple yet delicious joy in life
                     </p>
-                    <div className="flex justify-center items-center flex-row gap-5">
+                    <div className="flex justify-center lg:justify-start flex-wrap gap-4">
                         <Link
                             href="/home/menu"
-                            className="flex justify-center items-center gap-5 px-6 py-3 rounded-3xl bg-red-600 hover:text-red-700 shadow-md cursor-pointer"
+                            className="flex items-center gap-3 px-6 py-3 rounded-3xl bg-red-600 hover:text-red-700 shadow-md cursor-pointer"
                         >
                             <p className="text-white">ORDER NOW</p>
                             <CircleArrowRight className="text-white" />
                         </Link>
                         <Link
                             href="/home/about"
-                            className="flex justify-center items-center gap-5 px-6 py-3 rounded-3xl bg-white hover:border-gray-600 shadow-md cursor-pointer"
+                            className="flex items-center gap-3 px-6 py-3 rounded-3xl bg-white hover:border-gray-600 shadow-md cursor-pointer"
                         >
                             <p className="text-gray-600">LEARN MORE</p>
                             <CircleArrowRight className="text-gray-600" />
                         </Link>
                     </div>
                 </div>
-                <div className="ml-24">
+                <div className="lg:ml-24">
                     <Image
                         src={pizza}
                         alt="pizza"
-                        className="w-[600px] h-[600px]"
+                        className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:w-[500px] lg:h-[400px] xl:w-[600px] xl:h-[500px]"
                     />
                 </div>
             </div>
+
             <div>
-                <div className="absolute -left-8 top-[550px] overflow-hidden">
+                <div className="hidden md:block absolute -left-8 top-[550px] overflow-hidden">
                     <Image
                         src={sallad1}
-                        alt="sallad2"
+                        alt="sallad1"
                         width={200}
                         height={250}
                     />
                 </div>
-                <div className="absolute right-0 top-[525px] overflow-hidden">
+                <div className="hidden md:block absolute right-0 top-[525px] overflow-hidden">
                     <Image
                         src={sallad2}
                         alt="sallad2"
@@ -99,13 +102,15 @@ const HomePage = () => {
                     />
                 </div>
             </div>
-            <div className="mb-10 mt-5">
-                <div className="flex flex-col justify-center items-center">
+
+            <div className="mb-10 mt-10">
+                <div className="flex flex-col justify-center items-center text-center">
                     <p className="text-gray-600 text-xl">CHECK OUT</p>
-                    <h1 className="text-red-500 text-5xl">Our Best Sellers</h1>
+                    <h1 className="text-red-500 text-4xl sm:text-5xl">Our Best Sellers</h1>
                 </div>
             </div>
-            <div className="flex justify-center items-center p-3 gap-15">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center p-3">
                 {selectedItems.map((item) => (
                     <MenuItemCard
                         key={item._id}
@@ -116,16 +121,18 @@ const HomePage = () => {
                     />
                 ))}
             </div>
-            <section className="text-center my-16" id="about">
+
+
+            <section className="text-center my-16 px-4" id="about">
                 <div>
                     <h3 className="uppercase text-gray-500 font-semibold leading-4">
                         Our story
                     </h3>
-                    <h2 className="text-red-500 font-bold text-4xl italic">
+                    <h2 className="text-red-500 font-bold text-3xl sm:text-4xl italic">
                         About us
                     </h2>
                 </div>
-                <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4">
+                <div className="text-gray-500 max-w-md mx-auto mt-4 flex flex-col gap-4 text-justify">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni minima odit recusandae. Illum ipsa non repudiandae? Eum ipsam iste quos suscipit tempora? Aperiam esse fugiat inventore laboriosam officiis quam rem!
                     </p>
@@ -133,21 +140,23 @@ const HomePage = () => {
                     <p>Laborum molestias neque nulla obcaecati odio quia quod reprehenderit sit vitae voluptates? Eos, tenetur.</p>
                 </div>
             </section>
-            <section className="text-center my-8" id="contact">
+
+            <section className="text-center my-8 px-4" id="contact">
                 <div>
                     <h3 className="uppercase text-gray-500 font-semibold leading-4">
                         Don{"'"}t hesitate
                     </h3>
-                    <h2 className="text-red-500 font-bold text-4xl italic">
+                    <h2 className="text-red-500 font-bold text-3xl sm:text-4xl italic">
                         Contact us
                     </h2>
                 </div>
                 <div className="mt-8">
-                    <a className="text-4xl underline text-gray-500" href="tel:+46738123123">
+                    <a className="text-3xl sm:text-4xl underline text-gray-500" href="tel:+46738123123">
                         +20 1025926249
                     </a>
                 </div>
             </section>
+
             <footer className="text-center py-8 mt-16 border-t border-gray-200">
                 <p className="text-gray-500 text-sm">
                     © {new Date().getFullYear()} All rights reserved.

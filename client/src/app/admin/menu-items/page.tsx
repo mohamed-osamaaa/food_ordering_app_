@@ -114,21 +114,21 @@ export default function ItemsPage() {
     };
 
     return (
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
             <div className="flex flex-col items-center mb-10 mt-6">
                 <button
-                    className="bg-red-500 text-white px-4 py-2 rounded-2xl cursor-pointer"
+                    className="bg-red-500 text-white px-6 py-2 rounded-2xl cursor-pointer hover:bg-red-600 transition"
                     onClick={handleCreate}
                 >
                     Create New Item
                 </button>
             </div>
 
-            <div className="grid grid-cols-4 gap-10 mx-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 px-4 sm:px-10">
                 {items.map((item: any) => (
                     <div
                         key={item._id}
-                        className="border rounded-lg p-2 shadow cursor-pointer"
+                        className="border rounded-lg p-2 shadow hover:shadow-md transition cursor-pointer"
                         onClick={() => handleEdit(item)}
                     >
                         <Image
@@ -144,13 +144,13 @@ export default function ItemsPage() {
             </div>
 
             {showForm && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <form
                         onSubmit={handleSubmit}
-                        className="bg-white p-6 rounded-lg w-[500px] space-y-4 relative"
+                        className="bg-white p-6 rounded-lg w-full max-w-lg space-y-4 relative overflow-y-auto max-h-[90vh]"
                     >
-                        <div className="flex justify-between">
-                            <h2 className="text-lg font-bold mb-2">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-lg font-bold">
                                 {isEditing ? "Edit Item" : "Create Item"}
                             </h2>
                             <button
@@ -199,7 +199,7 @@ export default function ItemsPage() {
                         {/* Sizes */}
                         <div className="space-y-2">
                             <h3 className="font-semibold">Sizes:</h3>
-                            <div className="flex gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
                                 <input
                                     type="text"
                                     placeholder="Size"
@@ -223,14 +223,14 @@ export default function ItemsPage() {
                                         });
                                         setSize({ size: "", price: "" });
                                     }}
-                                    className="cursor-pointer bg-blue-500 text-white px-2 rounded"
+                                    className="bg-blue-500 text-white px-3 rounded hover:bg-blue-600 transition"
                                 >
                                     Add
                                 </button>
                             </div>
                             <ul className="space-y-1">
                                 {formData.sizes.map((s: any, idx: number) => (
-                                    <li key={idx} className="flex justify-between items-center">
+                                    <li key={idx} className="flex justify-between items-center text-sm">
                                         <span>{s.size} - ${s.price}</span>
                                         {isEditing && (
                                             <Trash2
@@ -247,7 +247,7 @@ export default function ItemsPage() {
                         {/* Extra Ingredients */}
                         <div className="space-y-2">
                             <h3 className="font-semibold">Extra Ingredients:</h3>
-                            <div className="flex gap-2">
+                            <div className="flex flex-col sm:flex-row gap-2">
                                 <input
                                     type="text"
                                     placeholder="Name"
@@ -281,14 +281,14 @@ export default function ItemsPage() {
                                         });
                                         setExtraIngredient({ name: "", price: "" });
                                     }}
-                                    className="cursor-pointer bg-blue-500 text-white px-2 rounded"
+                                    className="bg-blue-500 text-white px-3 rounded hover:bg-blue-600 transition"
                                 >
                                     Add
                                 </button>
                             </div>
                             <ul className="space-y-1">
                                 {formData.extraIngredients.map((ing: any, idx: number) => (
-                                    <li key={idx} className="flex justify-between items-center">
+                                    <li key={idx} className="flex justify-between items-center text-sm">
                                         <span>{ing.name} - ${ing.price}</span>
                                         {isEditing && (
                                             <Trash2
@@ -302,11 +302,11 @@ export default function ItemsPage() {
                             </ul>
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center pt-2">
                             {isEditing && (
                                 <button
                                     type="button"
-                                    className="cursor-pointer bg-red-500 text-white px-4 py-1 rounded"
+                                    className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
                                     onClick={handleDelete}
                                 >
                                     Delete Item
@@ -314,7 +314,7 @@ export default function ItemsPage() {
                             )}
                             <button
                                 type="submit"
-                                className="cursor-pointer bg-green-600 text-white px-4 py-1 rounded ml-auto"
+                                className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 transition ml-auto"
                             >
                                 {isEditing ? "Update" : "Create"}
                             </button>
