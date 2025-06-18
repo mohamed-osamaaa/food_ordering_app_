@@ -1,6 +1,2 @@
-const ADMIN = "admin";
-const USER = "user";
-module.exports = {
-    ADMIN,
-    USER,
-};
+export const ADMIN = "admin";
+export const USER = "user";
