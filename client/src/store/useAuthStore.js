@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 import { axiosInstance } from "../lib/axios.js";
 
-export const useAuthStore = create((set, get) => ({
+export const useAuthStore = create((set) => ({
     authUser: null,
     isRegister: false,
     isLoggingIn: false,
@@ -117,6 +117,7 @@ export const useAuthStore = create((set, get) => ({
             toast.success("Logged out successfully");
         } catch (error) {
             set({ authUser: null });
+            console.log(error);
         }
     },
 }));

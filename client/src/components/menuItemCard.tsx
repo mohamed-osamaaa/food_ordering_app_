@@ -6,7 +6,35 @@ import ItemDetailsModal from "./ItemDetailsModal";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 
-const MenuItemCard = ({ image, title, description, itemId }) => {
+interface MenuItemCardProps {
+    image: string;
+    title: string;
+    description: string;
+    itemId: string;
+}
+// interface Item {
+//     id: string;
+//     title: string;
+//     description: string;
+//     image: string;
+// }
+
+interface Item {
+    _id: string;
+    name: string;
+    description: string;
+    category: {
+        name: string;
+    };
+    itemImage: string;
+    sizes: { size: string; price: number; _id: string }[];
+    extraIngredients: { name: string; price: number; _id: string }[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+const MenuItemCard = ({ image, title, description, itemId }: MenuItemCardProps) => {
     // try {
     //     console.log(`${process.env.ITEM_IMAGES_SERVER_URL}${image}`);
     //     console.log(image);
@@ -15,8 +43,8 @@ const MenuItemCard = ({ image, title, description, itemId }) => {
     //     console.log("error image");
     // }
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const { fetchItemById, isLoading, error } = useItemStore();
+    const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+    const { fetchItemById, isLoading } = useItemStore();
     const { authUser } = useAuthStore();
     const router = useRouter();
 

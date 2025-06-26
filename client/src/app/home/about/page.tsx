@@ -45,7 +45,7 @@ function AboutPage() {
                         </p>
                         <div className="bg-gradient-to-r from-orange-100 to-red-100 rounded-lg p-6 sm:p-8">
                             <p className="text-lg sm:text-xl font-semibold text-gray-800 italic">
-                                {"\""}Food is not just sustenance – it's culture, comfort, and connection...{"\""}
+                                {"\""}Food is not just sustenance – it{"'"}s culture, comfort, and connection...{"\""}
                             </p>
                         </div>
                     </div>

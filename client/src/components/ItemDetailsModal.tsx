@@ -4,28 +4,47 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 import { useCartStore } from "../store/useCartStore";
 
-const ItemDetailsModal = ({ item, isOpen, onClose }) => {
+
+type Item = {
+    _id: string;
+    name: string;
+    itemImage: string;
+    description: string;
+    sizes?: { _id: string; size: string; price: number }[];
+    extraIngredients?: { _id: string; name: string; price: number }[];
+};
+
+interface ItemDetailsModalProps {
+    item: Item;
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+
+const ItemDetailsModal = ({ item, isOpen, onClose }: ItemDetailsModalProps) => {
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('');
-    const [selectedExtraIngredients, setSelectedExtraIngredients] = useState({});
+    const [selectedExtraIngredients, setSelectedExtraIngredients] = useState<
+        Record<string, boolean>
+    >({});
     const { addToCart } = useCartStore();
 
     if (!isOpen || !item) return null;
 
     const imgURL = String(process.env.NEXT_PUBLIC_ITEM_IMAGES_SERVER_URL) + String(item.itemImage);
 
-    const handleQuantityChange = (change) => {
+    const handleQuantityChange = (change: number) => {
         const newQuantity = quantity + change;
         if (newQuantity >= 1) {
             setQuantity(newQuantity);
         }
     };
 
-    const handleSizeChange = (size) => {
+    const handleSizeChange = (size: string) => {
         setSelectedSize(size);
     };
 
-    const handleExtraIngredientChange = (ingredientName, isSelected) => {
+    const handleExtraIngredientChange = (ingredientName: string, isSelected: boolean) => {
         setSelectedExtraIngredients(prev => ({
             ...prev,
             [ingredientName]: isSelected
@@ -45,7 +64,7 @@ const ItemDetailsModal = ({ item, isOpen, onClose }) => {
         if (item.extraIngredients) {
             Object.entries(selectedExtraIngredients).forEach(([ingredientName, isSelected]) => {
                 if (isSelected) {
-                    const ingredient = item.extraIngredients.find(ing => ing.name === ingredientName);
+                    const ingredient = item.extraIngredients && item.extraIngredients.find(ing => ing.name === ingredientName);
                     if (ingredient) basePrice += ingredient.price || 0;
                 }
             });

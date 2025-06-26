@@ -43,7 +43,7 @@ const containerVariants = {
 };
 
 const MenuPage = () => {
-    const { categories, itemsByCategory, isLoading, error, fetchItems } = useItemStore();
+    const { categories, itemsByCategory, fetchItems } = useItemStore();
 
     useEffect(() => {
         fetchItems();

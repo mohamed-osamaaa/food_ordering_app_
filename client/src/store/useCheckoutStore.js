@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 
-export const useCheckoutStore = create((set, get) => ({
+export const useCheckoutStore = create((set) => ({
     isLoading: false,
     isCreatingSession: false,
     isFetchingSuccessDetails: false,
@@ -46,7 +46,7 @@ export const useCheckoutStore = create((set, get) => ({
     processWebhook: async () => {
         set({ isProcessingWebhook: true });
         try {
-            const res = await axiosInstance.post("/api/check-out/success");
+            await axiosInstance.post("/api/check-out/success");
             toast.success("Order completed successfully!");
             return true;
         } catch (error) {

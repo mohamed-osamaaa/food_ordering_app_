@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios';
 import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
 
 // Type definitions based on API response
 interface Category {
@@ -38,7 +39,7 @@ interface ItemStore {
     fetchItemById: (id: string) => Promise<Item | null>;
 }
 
-export const useItemStore = create<ItemStore>((set, get) => ({
+export const useItemStore = create<ItemStore>((set) => ({
     categories: [],
     itemsByCategory: {},
     selectedItems: [],
@@ -92,12 +93,15 @@ export const useItemStore = create<ItemStore>((set, get) => ({
             });
             // toast.success("Items loaded successfully");
             return { categories, itemsByCategory };
-        } catch (error: any) {
-            set({
-                error: error.response?.data?.message || 'Failed to fetch data',
-                isLoading: false,
-            });
-            toast.error(error.response?.data?.message || 'Failed to fetch data');
+        } catch (error: unknown) {
+            let message = 'Failed to fetch data';
+            if (error instanceof AxiosError && error.response) {
+                message = error.response.data?.message || message;
+            }
+
+            set({ error: message, isLoading: false });
+            toast.error(message);
+            toast.error(message);
             return null;
         }
     },
@@ -137,12 +141,19 @@ export const useItemStore = create<ItemStore>((set, get) => ({
             }
 
             return items.length > 0 ? items : null;
-        } catch (error: any) {
-            set({
-                error: error.response?.data?.message || 'Failed to fetch items by IDs',
-                isLoading: false,
-            });
-            toast.error(error.response?.data?.message || 'Failed to fetch items by IDs');
+        } catch (error: unknown) {
+            // set({
+            //     error: error.response?.data?.message || 'Failed to fetch items by IDs',
+            //     isLoading: false,
+            // });
+            let message = 'Failed to fetch data';
+            if (error instanceof AxiosError && error.response) {
+                message = error.response.data?.message || message;
+            }
+
+            set({ error: message, isLoading: false });
+            toast.error(message);
+            toast.error(message);
             return null;
         }
     },
@@ -161,12 +172,15 @@ export const useItemStore = create<ItemStore>((set, get) => ({
             });
             // toast.success("Item loaded successfully");
             return item;
-        } catch (error: any) {
-            set({
-                error: error.response?.data?.message || 'Failed to fetch item by ID',
-                isLoading: false,
-            });
-            toast.error(error.response?.data?.message || 'Failed to fetch items by ID');
+        } catch (error: unknown) {
+            let message = 'Failed to fetch data';
+            if (error instanceof AxiosError && error.response) {
+                message = error.response.data?.message || message;
+            }
+
+            set({ error: message, isLoading: false });
+            toast.error(message);
+            toast.error(message);
             return null;
         }
     },

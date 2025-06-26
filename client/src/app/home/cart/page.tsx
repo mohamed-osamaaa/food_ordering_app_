@@ -6,15 +6,32 @@ import Image from "next/image";
 import { Loader2, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 
+
+type CartItem = {
+    _id: string;
+    name: string;
+    itemImage: string;
+    quantity: number;
+    selectedSize?: string;
+    extraIngredients?: { _id: string; name: string }[];
+    price: number;
+};
+
+// type Cart = {
+//     items: CartItem[];
+//     totalPrice: number;
+// };
+
+
 const CartPage = () => {
     const { getCart, cart, removeFromCart } = useCartStore();
     const { createCheckoutSession, isCreatingSession, processWebhook } = useCheckoutStore();
 
     useEffect(() => {
         getCart();
-    }, []);
+    }, [getCart]);
 
-    const handleDelete = async (itemId) => {
+    const handleDelete = async (itemId: string) => {
         const result = await Swal.fire({
             title: "Are you sure?",
             text: "Do you want to remove this item from the cart?",
@@ -83,7 +100,7 @@ const CartPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {cart?.items?.length > 0 ? (
-                    cart.items.map((item) => (
+                    cart.items.map((item: CartItem) => (
                         <div
                             key={item._id}
                             className="flex flex-col sm:flex-row items-center justify-between bg-gray-100 p-4 rounded-lg shadow"
@@ -107,7 +124,17 @@ const CartPage = () => {
                                     <p className="text-sm text-gray-600">Size: {item.selectedSize}</p>
                                 )}
 
-                                {item.extraIngredients?.length > 0 && (
+                                {/* {item.extraIngredients?.length > 0 && (
+                                    <div className="text-sm text-gray-600">
+                                        Extra:
+                                        {item.extraIngredients.map((extra) => (
+                                            <span key={extra._id} className="ml-2 text-sm text-gray-600">
+                                                {extra.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )} */}
+                                {item.extraIngredients && item.extraIngredients.length > 0 && (
                                     <div className="text-sm text-gray-600">
                                         Extra:
                                         {item.extraIngredients.map((extra) => (

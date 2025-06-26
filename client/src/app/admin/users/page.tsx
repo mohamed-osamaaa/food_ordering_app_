@@ -1,14 +1,21 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useUsersStore } from "@/store/useUsersStore";
 
+
+type User = {
+    _id: string;
+    fullname: string;
+    role: string;
+};
+
 const UsersPage = () => {
-    const { users, isLoading, fetchUsers, makeAdmin, searchByName } = useUsersStore();
+    const { users, fetchUsers, makeAdmin, searchByName } = useUsersStore();
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [fetchUsers]);
 
     const handleSearch = async () => {
         if (searchTerm.trim() === "") {
@@ -18,11 +25,11 @@ const UsersPage = () => {
         }
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             handleSearch();
         }
@@ -48,7 +55,7 @@ const UsersPage = () => {
             </div>
 
             <div className="space-y-4">
-                {users.map((user) => (
+                {users.map((user: User) => (
                     <div
                         key={user._id}
                         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition"

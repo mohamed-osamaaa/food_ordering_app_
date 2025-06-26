@@ -2,7 +2,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios.js";
 
-export const useItemStore = create((set, get) => ({
+export const useItemStore = create((set) => ({
     items: [],
     isLoading: false,
 
@@ -13,6 +13,7 @@ export const useItemStore = create((set, get) => ({
             set({ items: res.data.data });
         } catch (error) {
             toast.error("Failed to fetch items");
+            console.log(error);
         } finally {
             set({ isLoading: false });
         }
