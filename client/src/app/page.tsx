@@ -13,7 +13,7 @@ export default function Home() {
     useEffect(() => {
         checkAuth();
         console.log(authUser);
-    }, [checkAuth]);
+    }, [checkAuth, authUser]);
 
     useEffect(() => {
         if (!isCheckingAuth) {

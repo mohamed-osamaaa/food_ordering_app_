@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import Swal from "sweetalert2";
 
+
+interface Category {
+    _id: string;
+    name: string;
+}
+
+
 export default function CategoriesPage() {
     const {
         fetchCategories,
@@ -19,7 +26,7 @@ export default function CategoriesPage() {
 
     useEffect(() => {
         fetchCategories();
-    }, []);
+    }, [fetchCategories]);
 
     const handleCreate = () => {
         if (newCategory.trim()) {
@@ -57,7 +64,7 @@ export default function CategoriesPage() {
 
             {/* List Categories */}
             <ul className="space-y-4">
-                {categories.map((category) => (
+                {categories.map((category: Category) => (
                     <li
                         key={category._id}
                         className="flex flex-col md:flex-row md:justify-between md:items-center border border-red-500 rounded px-3 py-2 gap-3"

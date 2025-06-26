@@ -5,8 +5,38 @@ import { useOrderStore } from '@/store/useOrderStore'
 import { toast } from 'react-hot-toast'
 import { X } from 'lucide-react'
 
+
+
+interface User {
+    _id: string;
+    fullname: string;
+    email?: string;
+}
+
+interface Item {
+    _id: string;
+    name: string;
+    price: number;
+    description?: string;
+}
+
+interface OrderItem {
+    item: Item;
+    quantity: number;
+    _id?: string;
+}
+
+interface Order {
+    _id: string;
+    user: User;
+    items: OrderItem[];
+    totalPrice: number;
+    createdAt: string;
+    updatedAt?: string;
+}
+
 export default function OrdersPage() {
-    const { orders, fetchOrders, fetchOrder, selectedOrder, isLoading } = useOrderStore()
+    const { orders, fetchOrders, fetchOrder, selectedOrder } = useOrderStore()
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
@@ -19,6 +49,7 @@ export default function OrdersPage() {
             setIsModalOpen(true)
         } catch (error) {
             toast.error('Failed to load order details')
+            console.log(error);
         }
     }
 
@@ -48,7 +79,7 @@ export default function OrdersPage() {
                                     <td colSpan={5} className="px-6 py-4 text-center text-gray-500">No orders found</td>
                                 </tr>
                             ) : (
-                                orders.map((order) => (
+                                orders.map((order: Order) => (
                                     <tr key={order._id}>
                                         <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-gray-700">
                                             {order.user?.fullname || 'N/A'}
@@ -106,7 +137,7 @@ export default function OrdersPage() {
                                 <div>
                                     <h3 className="font-medium text-gray-500">Items</h3>
                                     <ul className="mt-2 space-y-2">
-                                        {selectedOrder.items.map((orderItem, index) => (
+                                        {selectedOrder.items.map((orderItem: OrderItem, index: number) => (
                                             <li key={index} className="border-t pt-2">
                                                 <p className="text-gray-800">
                                                     Item: {orderItem.item?.name || 'Unknown Item'}

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios.js";
 
-export const useCategoryStore = create((set, get) => ({
+export const useCategoryStore = create((set) => ({
     categories: [],
     isLoading: false,
 
@@ -13,6 +13,7 @@ export const useCategoryStore = create((set, get) => ({
             set({ categories: res.data.data });
         } catch (error) {
             toast.error("Failed to fetch categories");
+            console.log(error);
         } finally {
             set({ isLoading: false });
         }

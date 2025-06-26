@@ -6,6 +6,44 @@ import Image from "next/image";
 import { X, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 
+
+interface Size {
+    size: string;
+    price: number;
+}
+
+interface ExtraIngredient {
+    name: string;
+    price: number;
+}
+
+interface Category {
+    name: string;
+}
+
+interface Item {
+    _id: string;
+    name: string;
+    description: string;
+    category: Category;
+    price: number;
+    itemImage?: string | null;
+    sizes: Size[];
+    extraIngredients: ExtraIngredient[];
+}
+
+interface FormData {
+    name: string;
+    description: string;
+    category: Category;
+    price: number;
+    itemImage: File | null;
+    sizes: Size[];
+    extraIngredients: ExtraIngredient[];
+}
+
+
+
 export default function ItemsPage() {
     const {
         items,
@@ -17,12 +55,13 @@ export default function ItemsPage() {
         deleteSize,
     } = useItemStore();
 
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [formData, setFormData] = useState<any>({
+    const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+    // const [formData, setFormData] = useState<Omit<Item, '_id'> & { itemImage: File | null | undefined }>({
+    const [formData, setFormData] = useState<FormData>({
         name: "",
         description: "",
-        category: "",
-        price: "",
+        category: { name: "" },
+        price: 0,
         itemImage: null,
         sizes: [],
         extraIngredients: [],
@@ -36,14 +75,14 @@ export default function ItemsPage() {
 
     useEffect(() => {
         fetchItems();
-    }, []);
+    }, [fetchItems]);
 
     const handleCreate = () => {
         setFormData({
             name: "",
             description: "",
-            category: "",
-            price: "",
+            category: { name: "" },
+            price: 0,
             itemImage: null,
             sizes: [],
             extraIngredients: [],
@@ -53,7 +92,7 @@ export default function ItemsPage() {
         setShowForm(true);
     };
 
-    const handleEdit = (item: any) => {
+    const handleEdit = (item: Item) => {
         setFormData({
             name: item.name,
             description: item.description,
@@ -125,14 +164,21 @@ export default function ItemsPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8 px-4 sm:px-10">
-                {items.map((item: any) => (
+                {items.map((item: Item) => (
                     <div
                         key={item._id}
                         className="border rounded-lg p-2 shadow hover:shadow-md transition cursor-pointer"
                         onClick={() => handleEdit(item)}
                     >
-                        <Image
+                        {/* <Image
                             src={process.env.NEXT_PUBLIC_ITEM_IMAGES_SERVER_URL + item.itemImage}
+                            alt={item.name}
+                            width={300}
+                            height={200}
+                            className="w-full h-48 object-cover rounded"
+                        /> */}
+                        <Image
+                            src={`${process.env.NEXT_PUBLIC_ITEM_IMAGES_SERVER_URL!}${item.itemImage}`}
                             alt={item.name}
                             width={300}
                             height={200}
@@ -156,7 +202,7 @@ export default function ItemsPage() {
                             <button
                                 type="button"
                                 onClick={() => setShowForm(false)}
-                                className="w-6 h-6 flex items-center justify-center text-red-500 hover:text-gray-700 text-xl font-bold cursor-pointer border-2 border-red-500 hover:border-gray-700 rounded-full"
+                                className="cursor-pointer w-6 h-6 flex items-center justify-center text-red-500 hover:text-gray-700 text-xl font-bold border-2 border-red-500 hover:border-gray-700 rounded-full"
                             >
                                 <X size={15} />
                             </button>
@@ -184,7 +230,9 @@ export default function ItemsPage() {
                             type="text"
                             placeholder="Category Name"
                             value={formData.category.name}
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                            onChange={(e) =>
+                                setFormData({ ...formData, category: { name: e.target.value } })
+                            }
                             className="w-full border p-2 rounded"
                             required
                         />
@@ -192,7 +240,7 @@ export default function ItemsPage() {
                         <input
                             type="file"
                             className="cursor-pointer w-full border p-2 rounded"
-                            onChange={(e) => setFormData({ ...formData, itemImage: e.target.files?.[0] })}
+                            onChange={(e) => setFormData({ ...formData, itemImage: e.target.files?.[0] || null })}
                             accept="image/*"
                         />
 
@@ -229,7 +277,7 @@ export default function ItemsPage() {
                                 </button>
                             </div>
                             <ul className="space-y-1">
-                                {formData.sizes.map((s: any, idx: number) => (
+                                {formData.sizes.map((s: Size, idx: number) => (
                                     <li key={idx} className="flex justify-between items-center text-sm">
                                         <span>{s.size} - ${s.price}</span>
                                         {isEditing && (
@@ -287,7 +335,7 @@ export default function ItemsPage() {
                                 </button>
                             </div>
                             <ul className="space-y-1">
-                                {formData.extraIngredients.map((ing: any, idx: number) => (
+                                {formData.extraIngredients.map((ing: ExtraIngredient, idx: number) => (
                                     <li key={idx} className="flex justify-between items-center text-sm">
                                         <span>{ing.name} - ${ing.price}</span>
                                         {isEditing && (

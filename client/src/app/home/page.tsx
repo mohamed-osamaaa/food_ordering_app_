@@ -34,7 +34,7 @@ const itemVariants = {
 };
 
 const HomePage = () => {
-    const { selectedItems, isLoading, error, fetchItemsByIds } = useItemStore();
+    const { selectedItems, fetchItemsByIds } = useItemStore();
     const targetIds = [
         '68482f4b3adc76545f59e2e8',
         '68482fc23adc76545f59e312',

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useAuthStore } from "@/store/useAuthStore";
+import Image from "next/image";
 
 function Register() {
     const router = useRouter();
@@ -48,9 +49,11 @@ function Register() {
                         className="w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-full cursor-pointer hover:border-red-500 transition"
                     >
                         {formData.profileImage ? (
-                            <img
+                            <Image
                                 src={URL.createObjectURL(formData.profileImage)}
                                 alt="Preview"
+                                width={150}
+                                height={150}
                                 className="w-full h-full object-cover rounded-full"
                             />
                         ) : (

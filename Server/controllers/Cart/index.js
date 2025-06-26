@@ -99,6 +99,8 @@ export const addToCart = async (req, res) => {
 
         cart.totalPrice += price * quantity;
 
+      
+      
         await cart.save();
         cart = await Cart.findById(cart._id);
         const itemCount = cart.items.reduce((sum, i) => sum + i.quantity, 0);
