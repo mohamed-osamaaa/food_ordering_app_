@@ -18,7 +18,7 @@ interface Item {
     description: string;
     category: {
         name: string;
-    }; // Category ID (string)
+    };
     itemImage: string;
     sizes: { size: string; price: number; _id: string }[];
     extraIngredients: { name: string; price: number; _id: string }[];
@@ -31,7 +31,7 @@ interface ItemStore {
     categories: Category[];
     itemsByCategory: Record<string, Item[]>;
     selectedItems: Item[];
-    selectedItem: Item | null; // Added missing property with correct type
+    selectedItem: Item | null; 
     isLoading: boolean;
     error: string | null;
     fetchItems: () => Promise<{ categories: Category[]; itemsByCategory: Record<string, Item[]> } | null>;
@@ -43,7 +43,7 @@ export const useItemStore = create<ItemStore>((set) => ({
     categories: [],
     itemsByCategory: {},
     selectedItems: [],
-    selectedItem: null, // Fixed: changed from {} to null to match the type
+    selectedItem: null, 
     isLoading: false,
     error: null,
 
